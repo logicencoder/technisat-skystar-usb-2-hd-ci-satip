@@ -1,0 +1,16 @@
+[Unit]
+Description=minisatip Sat>IP server (SkyStar USB 2 HD CI)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=@REPO_ROOT@
+ExecStartPre=@REPO_ROOT@/scripts/free-tuner.sh
+ExecStart=@REPO_ROOT@/scripts/start-minisatip.sh
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

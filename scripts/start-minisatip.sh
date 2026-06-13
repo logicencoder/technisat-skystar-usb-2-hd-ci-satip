@@ -1,48 +1,43 @@
 #!/bin/bash
-# Sat>IP server — SkyStar USB 2 HD CI (14f7:0001), Astra 23.5°E, direct LNB
+# Sat>IP server — SkyStar USB 2 HD CI (14f7:0001)
 set -euo pipefail
+source "$(dirname "$0")/lib/common.sh"
 
-ROOT="$(cd "$(dirname "$0")" && pwd)"
-BIN="$ROOT/source/build/minisatip"
-if [ ! -x "$BIN" ]; then
-  BIN="$ROOT/bin/minisatip"
-fi
-HTML="$ROOT/html"
-CACHE="$ROOT/cache"
-IP=$(ip -4 route get 1.1.1.1 2>/dev/null | awk '{for(i=1;i<=NF;i++) if($i=="src") print $(i+1)}')
-IP=${IP:-192.168.1.97}
+BIN="$(minisatip_bin)" || {
+  echo "minisatip not built. Run: bash scripts/build-minisatip.sh" >&2
+  exit 1
+}
+
+HTML="${SATIP_DIR}/html"
+CACHE="${SATIP_DIR}/cache"
+IP="$(satip_bind_ip)"
+IP=${IP:?Could not detect bind IP — set SATIP_BIND_IP in config.env}
 
 mkdir -p "$CACHE"
 
-# SkyStar: do NOT use enigma mode (/etc/enigma2/settings is TBS5590 only)
-if [[ -f /etc/enigma2/settings && ! -f /etc/enigma2/settings.tbs-only.bak ]]; then
-  python3 - <<'PY'
-import yaml, subprocess
-from pathlib import Path
-p = Path('/home/enigma2/universal-service-manager/services.yaml')
-pwd = yaml.safe_load(p.read_text()).get('settings', {}).get('sudo_password', '')
-subprocess.run(['sudo', '-S', 'mv', '/etc/enigma2/settings', '/etc/enigma2/settings.tbs-only.bak'],
-               input=pwd + '\n', text=True)
-PY
+# enigma settings break SkyStar demux — move aside if root
+if [[ "${EUID:-$(id -u)}" -eq 0 ]]; then
+  move_enigma_settings_aside
 fi
 
 if ! ls /dev/dvb/adapter*/frontend0 &>/dev/null; then
-  python3 - <<'PY'
-import yaml, subprocess
-from pathlib import Path
-p = Path('/home/enigma2/universal-service-manager/services.yaml')
-pwd = yaml.safe_load(p.read_text()).get('settings', {}).get('sudo_password', '')
-subprocess.run(['sudo', '-S', 'bash', '/home/enigma2/sat_stuff/minisatip/load-skystar-driver.sh'],
-               input=pwd + '\n', text=True, check=True)
-PY
+  bash "$REPO_ROOT/scripts/load-skystar-driver.sh"
 fi
+
+# html from minisatip source if not linked
+if [[ ! -d "$HTML" && -d "$SATIP_DIR/source/html" ]]; then
+  HTML="$SATIP_DIR/source/html"
+fi
+
+echo "minisatip: $BIN"
+echo "Bind IP: $IP  RTSP: $SATIP_RTSP_PORT  HTTP: $SATIP_HTTP_PORT  adapter: $MINISATIP_ADAPTER"
 
 exec "$BIN" -f -ll \
   -z "$CACHE" \
   -R "$HTML" \
-  -L '*:9750-10600-11700' \
+  -L "$SATIP_LNB" \
   -d '*:0-0' \
-  -e 0 \
+  -e "$MINISATIP_ADAPTER" \
   -p "$IP" \
-  -w "$IP:8080" \
-  -y 8554
+  -w "$IP:$SATIP_HTTP_PORT" \
+  -y "$SATIP_RTSP_PORT"

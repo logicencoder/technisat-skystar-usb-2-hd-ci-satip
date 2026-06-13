@@ -271,6 +271,8 @@ sudo reboot
 
 Documentation and scripts: **https://github.com/logicencoder/skystar-satip-docs**
 
+**New server setup:** see [SETUP-NEW-SERVER.md](SETUP-NEW-SERVER.md) in the repo.
+
 ---
 
 *Last updated: June 2026*

@@ -1,28 +1,27 @@
 #!/bin/bash
 # Push skystar-satip-docs to GitHub (logicencoder)
-# Token: ~/.gitpush_secret.txt (set via: python3 ~/lojzo/githelper/gitcc.py)
+# Token is on SOL server: sol@192.168.1.103 ~/.gitpush_secret.txt
 set -euo pipefail
 
 REPO="skystar-satip-docs"
 USER="logicencoder"
 DIR="$(cd "$(dirname "$0")" && pwd)"
+SOL_KEY="/home/enigma2/lojzo/ssh-key-2024-05-16.key"
+SOL_HOST="sol@192.168.1.103"
 
-find_token() {
-  for f in "$HOME/.gitpush_secret.txt" "$HOME/lojzo/.gitpush_secret.txt" "$HOME/lojzo/githelper/.gitpush_secret.txt"; do
-    if [[ -f "$f" ]]; then
-      tr -d '\n' < "$f"
-      return 0
-    fi
-  done
-  return 1
+fetch_token() {
+  if [[ -f "$HOME/.gitpush_secret.txt" ]]; then
+    tr -d '\n' < "$HOME/.gitpush_secret.txt"
+    return 0
+  fi
+  ssh -i "$SOL_KEY" -o BatchMode=yes -o ConnectTimeout=15 "$SOL_HOST" \
+    'cat /home/sol/.gitpush_secret.txt' 2>/dev/null | tr -d '\n'
 }
 
-TOKEN=$(find_token || true)
+TOKEN=$(fetch_token || true)
 if [[ -z "$TOKEN" ]]; then
-  echo "GitHub token not found."
-  echo "Set it via: python3 ~/lojzo/githelper/gitcc.py"
-  echo "  → 1 Setup → Update token"
-  echo "  → saves to ~/.gitpush_secret.txt"
+  echo "GitHub token not found locally or on SOL ($SOL_HOST)."
+  echo "On SOL: python3 ~/lojzo/githelper/gitcc.py → Update token"
   exit 1
 fi
 

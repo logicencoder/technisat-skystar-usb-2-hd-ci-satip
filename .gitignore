@@ -3,21 +3,12 @@
 *.secret
 .env
 
-# Build artifacts
-*.ko
-*.o
-*.mod
-*.mod.c
-*.cmd
-Module.symvers
-modules.order
-.tmp_versions/
-
-# Huge trees (never commit)
-linux-6.8/
-minisatip/source/
-minisatip/cache/
+# Build output
+minisatip/
 backup/
+config.env
+
+# Secrets
 
 # OS / editor
 __pycache__/

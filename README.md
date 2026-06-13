@@ -1,65 +1,54 @@
 # skystar-satip-docs
 
-Complete documentation and scripts for **TechniSat SkyStar USB 2 HD CI** + **minisatip** + **DVBViewer** on Ubuntu.
+Complete **self-contained** setup for **TechniSat SkyStar USB 2 HD CI** + **minisatip** + **DVBViewer** on Ubuntu.
 
-## Why this repository exists
+## New server — start here
 
-Stock Linux kernel `stb0899` does not support DVB-S2 on card `14f7:0001`. Fix: patched `stb0899` + stock `az6027` + disabled TBS media_build.
+```bash
+git clone https://github.com/logicencoder/skystar-satip-docs.git
+cd skystar-satip-docs
+sudo bash scripts/install-new-server.sh
+sudo reboot
+./scripts/start-minisatip.sh
+```
 
-This repo is a **backup of the guide** for the user and for AI agents — so the next LLM does not break the system.
+**Full guide:** [SETUP-NEW-SERVER.md](SETUP-NEW-SERVER.md)
 
-## Start here
+## Documentation
 
-| File | Content |
+| File | Purpose |
 |------|---------|
-| [SKYSTAR-GUIDE.md](SKYSTAR-GUIDE.md) | Complete guide — startup, diagnostics, kernel update |
-| [LLM-INSTRUCTIONS.md](LLM-INSTRUCTIONS.md) | **For AI:** what to do and what NEVER to do |
+| [SETUP-NEW-SERVER.md](SETUP-NEW-SERVER.md) | **Complete install from scratch** (human + LLM) |
+| [LLM-INSTRUCTIONS.md](LLM-INSTRUCTIONS.md) | AI safety rules — read before any changes |
+| [SKYSTAR-GUIDE.md](SKYSTAR-GUIDE.md) | Reference, troubleshooting, kernel updates |
 
-## Hardware / network
+## What the install script does
 
-- Server: Ubuntu 24.04, `192.168.1.97`
+- Installs build packages + firmware
+- Disables conflicting TBS `media_build`
+- Builds + installs **patched stb0899** (required for DVB-S2)
+- Configures udev, modprobe, modules-load
+- Builds **minisatip** from upstream GitHub
+- Enables **systemd** service `minisatip-skystar`
+
+## Hardware
+
 - Tuner: TechniSat SkyStar USB 2 HD CI (`14f7:0001`)
-- Sat>IP: port 8554, web status 8080
+- Sat>IP port: 8554, web: 8080
 - Client: DVBViewer Pro (Windows), CAM on Windows
 
-## Quick start (after reboot)
-
-```bash
-lsusb | grep 14f7
-ls /dev/dvb/adapter0/
-sudo modprobe dvb_usb_az6027   # if /dev/dvb missing
-python3 ~/universal-service-manager/usm.py start minisatip
-```
-
-## Test stream (CT24, Astra 23.5°E)
+## Test stream (Astra 23.5°E CT24)
 
 ```
-rtsp://192.168.1.97:8554/?src=1&freq=12344&pol=h&sr=29900&msys=dvbs2&mtype=8psk&fec=34&pids=1310,1320
+rtsp://YOUR_IP:8554/?src=1&freq=12344&pol=h&sr=29900&msys=dvbs2&mtype=8psk&fec=34&pids=1310,1320
 ```
 
-## Repository layout
+## LLM prompt (copy-paste)
 
 ```
-scripts/                  — load driver, install, minisatip start
-stb0899-module/           — patched driver source (build against Ubuntu headers)
-SKYSTAR-GUIDE.md          — main guide
-LLM-INSTRUCTIONS.md       — rules for AI agents
-```
-
-## Kernel update
-
-After every new Ubuntu kernel, rebuild `stb0899`:
-
-```bash
-cd stb0899-module && make clean && make -j$(nproc) && sudo make install && sudo reboot
-```
-
-See [SKYSTAR-GUIDE.md](SKYSTAR-GUIDE.md) — "Kernel update" section.
-
-## Local copy on server
-
-```
-~/sat_stuff/SKYSTAR-GUIDE.md
-~/sat_stuff/LLM-INSTRUCTIONS.md
-~/sat_stuff/skystar-satip-docs/   ← this git repository
+Clone https://github.com/logicencoder/skystar-satip-docs
+Read SETUP-NEW-SERVER.md and LLM-INSTRUCTIONS.md first.
+Run: sudo bash scripts/install-new-server.sh && sudo reboot
+Then: ./scripts/start-minisatip.sh
+FORBIDDEN: modprobe -r loops, USB reset, TBS media in updates/extra/
 ```

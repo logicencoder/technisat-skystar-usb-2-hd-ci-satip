@@ -1,10 +1,20 @@
 # Instructions for AI/LLM Agents — SkyStar Sat>IP Setup
 
-> **Purpose:** This file exists so the next LLM **does not break the system**. The user sent you here — read this ENTIRE file before making any changes.
+> **Purpose:** This file exists so the next LLM **does not break the system**. Read this ENTIRE file before making any changes.
 
 ---
 
-## Context
+## New server? Start here
+
+**If this is a fresh machine (not the original enigma2 server):**
+
+1. Read [SETUP-NEW-SERVER.md](SETUP-NEW-SERVER.md) — complete install from zero
+2. Run: `sudo bash scripts/install-new-server.sh && sudo reboot`
+3. Then: `./scripts/start-minisatip.sh`
+
+**Do not improvise.** Follow the scripts in the repo.
+
+---
 
 - Linux server `192.168.1.97`, Ubuntu 24.04, user `enigma2`
 - **Active tuner:** TechniSat SkyStar USB 2 HD CI (`14f7:0001`)
