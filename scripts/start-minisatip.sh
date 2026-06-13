@@ -32,13 +32,14 @@ fi
 echo "minisatip: $BIN"
 echo "Bind IP: $IP  RTSP: $SATIP_RTSP_PORT  HTTP: $SATIP_HTTP_PORT  adapter: $MINISATIP_ADAPTER"
 
-# -k: emulate pids=all (TransEdit scan / full transponder)
+# -k: pids=all (TransEdit) | -d/-q: DiSEqC switch (tested 3-way)
 exec "$BIN" -f -ll \
   -k \
   -z "$CACHE" \
   -R "$HTML" \
   -L "$SATIP_LNB" \
-  -d '*:0-0' \
+  -d '*:2-0' \
+  -q '*:25-54-54-25-25-25' \
   -e "$MINISATIP_ADAPTER" \
   -p "$IP" \
   -w "$IP:$SATIP_HTTP_PORT" \

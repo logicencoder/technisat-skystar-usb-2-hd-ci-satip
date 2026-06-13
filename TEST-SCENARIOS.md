@@ -102,6 +102,27 @@ Full TransEdit steps: [SATIP-CLIENT-SETTINGS.md](SATIP-CLIENT-SETTINGS.md)
 
 ---
 
+## Test 6c — DiSEqC switch (optional, 3 satellites)
+
+Tested wiring — see [SATIP-CLIENT-SETTINGS.md](SATIP-CLIENT-SETTINGS.md#diseqc-switch-3-satellites-1-tuner--tested):
+
+| Satellite | `src=` | ffprobe test |
+|-----------|--------|--------------|
+| Astra 23.5°E | 1 | `src=1&freq=12344&pol=h&sr=29900&msys=dvbs2&mtype=8psk&fec=34&pids=1310,1320` |
+| Astra 4.8°E | 2 | `src=2&freq=11727&pol=v&sr=27500&msys=dvbs2&mtype=8psk&fec=56&pids=0,16,17` |
+| Astra 19.2°E | 3 | `src=3&freq=11494&pol=h&sr=22000&msys=dvbs2&mtype=8psk&fec=23&pids=0,16,17` |
+
+```bash
+ffprobe -v error -show_entries stream=codec_name -of csv=p=0 \
+  "rtsp://127.0.0.1:8554/?src=3&freq=11494&pol=h&sr=22000&msys=dvbs2&mtype=8psk&fec=23&pids=0,16,17"
+```
+
+**Expected:** `h264` / `mp2` (or similar) per satellite when dish + switch port match.
+
+**DVBViewer:** DiSEqC port 1 / 2 / 3 per satellite. **TransEdit:** Pos A/A, B/A, A/B.
+
+---
+
 ## Test 7 — Reboot
 
 ```bash
@@ -144,6 +165,7 @@ Repeat Tests 2, 3, 5.
 | 5b | Full transponder | `pids=all` streams |
 | 6 | DVBViewer Sat>IP FTA | scan + play (optional) |
 | 6b | TransEdit Sat>IP | scan + NIT (optional) |
+| 6c | DiSEqC 3-way | 23.5 / 4.8 / 19.2 on src 1/2/3 (optional) |
 | 7 | Reboot | works again |
 | 8 | Kernel update | rebuild stb0899, still works |
 

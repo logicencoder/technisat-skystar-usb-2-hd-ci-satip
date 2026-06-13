@@ -4,7 +4,7 @@
 
 Ubuntu driver patch (DVB-S2) + **minisatip Sat>IP server** for **FTA** channels.
 
-**Tested** with **DVBViewer** and **TransEdit** (Sat>IP, FTA) — including **full transponder** scan.
+**Tested** with **DVBViewer** and **TransEdit** — full transponder scan + **DiSEqC** (Astra 23.5 / 19.2 / 4.8°E).
 
 | Doc | Link |
 |-----|------|
@@ -69,7 +69,7 @@ Tests: [TEST-SCENARIOS.md](TEST-SCENARIOS.md)
 
 | File | Content |
 |------|---------|
-| [SATIP-CLIENT-SETTINGS.md](SATIP-CLIENT-SETTINGS.md) | **Sat>IP — DVBViewer, TransEdit, VLC** |
+| [SATIP-CLIENT-SETTINGS.md](SATIP-CLIENT-SETTINGS.md) | **Sat>IP — DVBViewer, TransEdit, DiSEqC, VLC** |
 | [HARDWARE-IDENTITY.md](HARDWARE-IDENTITY.md) | Card name & USB ID |
 | [PROBLEM-AND-SOLUTION.md](PROBLEM-AND-SOLUTION.md) | What was broken & why |
 | [TEST-SCENARIOS.md](TEST-SCENARIOS.md) | Tests |
