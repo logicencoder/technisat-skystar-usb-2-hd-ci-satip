@@ -1,0 +1,32 @@
+# Secrets
+.gitpush_secret.txt
+*.secret
+.env
+
+# Build artifacts
+*.ko
+*.o
+*.mod
+*.mod.c
+*.cmd
+Module.symvers
+modules.order
+.tmp_versions/
+
+# Huge trees (never commit)
+linux-6.8/
+minisatip/source/
+minisatip/cache/
+backup/
+
+# OS / editor
+__pycache__/
+.DS_Store
+.idea/
+.vscode/
+
+# Logs
+*.log
+
+# Passwords in configs — reference only, redact before commit
+services.yaml

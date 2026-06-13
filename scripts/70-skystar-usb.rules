@@ -1,0 +1,2 @@
+# SkyStar USB 2 HD CI — vypni USB autosuspend (VDR/OSMC odporúčanie)
+ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="14f7", ATTR{idProduct}=="0001", ATTR{power/control}="on"
