@@ -946,6 +946,20 @@ static u16 stb0899_to_snr_scale(int cn_db10)
 	return (u16)((cn_db10 * 65535) / 200);
 }
 
+/*
+ * STB0899 DVB-S2 Es/N0 from UWP registers runs low vs MER in TransEdit/ffprobe.
+ * Empirical offset on SkyStar 14f7:0001: ~+6 dB to align Sat>IP meters with analyzer.
+ */
+static int stb0899_calibrate_snr_db10(int cn_db10)
+{
+	if (cn_db10 <= 0)
+		return cn_db10;
+	cn_db10 += 60; /* +6.0 dB */
+	if (cn_db10 > 200)
+		return 200;
+	return cn_db10;
+}
+
 static int stb0899_read_signal_strength(struct dvb_frontend *fe, u16 *strength)
 {
 	struct stb0899_state *state		= fe->demodulator_priv;
@@ -1032,6 +1046,7 @@ static int stb0899_read_snr(struct dvb_frontend *fe, u16 *snr)
 				estn = stb0899_table_lookup(stb0899_est_tab, ARRAY_SIZE(stb0899_est_tab) - 1, est);
 				/* snr(dBm/10) = -10*(log(est)-log(quant^2)) => snr(dBm/10) = (100*log(quant^2)-100*log(est))/10 */
 				val = (quantn - estn) / 10;
+				val = stb0899_calibrate_snr_db10(val);
 			}
 			*snr = stb0899_to_snr_scale(val);
 			dprintk(state->verbose, FE_DEBUG, 1, "Es/N0 quant = %d (%d) estimate = %u (%d), snr scale %u",
@@ -1640,5 +1655,5 @@ error:
 EXPORT_SYMBOL_GPL(stb0899_attach);
 MODULE_PARM_DESC(verbose, "Set Verbosity level");
 MODULE_AUTHOR("Manu Abraham");
-MODULE_DESCRIPTION("STB0899 Multi-Std frontend");
+MODULE_DESCRIPTION("STB0899 Multi-Std frontend (SkyStar: DVB-S2 + signal scale + SNR +6dB)");
 MODULE_LICENSE("GPL");

@@ -2,7 +2,9 @@
 
 > **Card:** **TechniSat SkyStar USB 2 HD CI** · USB **`14f7:0001`**
 
-Stock Linux driver is **broken for DVB-S2** on this card — with the **patched `stb0899`** (DVB-S2 + **signal/SNR scale**) the card is **fully functional**. You do **not** need to discard it.
+Stock Linux driver is **broken for DVB-S2** on this card — with the **patched `stb0899`** (DVB-S2 + **signal scale** + **SNR calibration**) the card is **fully functional**. You do **not** need to discard it.
+
+This is **not** the stock Ubuntu kernel driver. The repo ships **one out-of-tree module** with **three fixes** on top of the community DVB-S2 patch (DVB-S2 lock, signal scale, SNR calibration).
 
 **After patch — tested, working:**
 
@@ -37,7 +39,7 @@ Ubuntu driver patch + **minisatip Sat>IP server** for **FTA** channels.
 | Part | What |
 |------|------|
 | **Card** | TechniSat SkyStar USB 2 HD CI (`14f7:0001`) |
-| **Fix** | Patched `stb0899.ko` — **DVB-S2 lock** + **signal/SNR 0–65535 scale** ([PATCHES.md](PATCHES.md)) |
+| **Fix** | Patched `stb0899.ko` — **DVB-S2 lock** + **signal scale** + **SNR +6 dB calibration** ([PATCHES.md](PATCHES.md)) |
 | **Sat>IP server** | minisatip — port **8554**, web **8080** |
 | **Channels** | **FTA only** |
 

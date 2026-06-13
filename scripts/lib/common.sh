@@ -36,7 +36,8 @@ minisatip_bin() {
     "$SATIP_DIR/build/minisatip" \
     "$SATIP_DIR/source/build/minisatip" \
     "$SATIP_DIR/bin/minisatip" \
-    "$REPO_ROOT/minisatip/build/minisatip"; do
+    "$REPO_ROOT/minisatip/build/minisatip" \
+    "$REPO_ROOT/../minisatip/source/build/minisatip"; do
     if [[ -x "$b" ]]; then
       echo "$b"
       return 0

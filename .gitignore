@@ -7,6 +7,14 @@
 minisatip/
 backup/
 config.env
+stb0899-module/*.ko
+stb0899-module/*.o
+stb0899-module/*.mod
+stb0899-module/*.mod.c
+stb0899-module/Module.symvers
+stb0899-module/modules.order
+stb0899-module/.*.cmd
+stb0899-module/.*.d
 
 # Secrets
 

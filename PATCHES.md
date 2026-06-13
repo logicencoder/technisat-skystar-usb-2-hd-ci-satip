@@ -5,7 +5,7 @@
 Source: [`stb0899-module/`](stb0899-module/) — built by `scripts/install-skystar-driver.sh`  
 Install path: `/lib/modules/$(uname -r)/updates/skystar/stb0899.ko`
 
-This is **not** the stock Ubuntu kernel driver. The repo ships **one out-of-tree module** with **two fixes** applied on top of the community DVB-S2 patch.
+This is **not** the stock Ubuntu kernel driver. The repo ships **one out-of-tree module** with **three fixes** applied on top of the community DVB-S2 patch.
 
 ---
 
@@ -44,6 +44,28 @@ Only **minisatip** does an extra `>> 8` internally for the Sat>IP protocol (0–
 
 ---
 
+## Patch 3 — DVB-S2 SNR calibration (+6 dB, tested)
+
+| | |
+|--|--|
+| **Problem** | After Patch 2, signal % looked realistic (~70 %) but **SNR stuck ~25 %** while TransEdit MER on the same TP showed **~11–12 dB**. STB0899 `UWP_ESN0` hardware estimate runs **~6 dB low** vs analyzer tools |
+| **Fix** | `stb0899_calibrate_snr_db10()` — adds **+6.0 dB** to DVB-S2 Es/N0 before `stb0899_to_snr_scale()` |
+| **Tested** | ✅ minisatip / DVBViewer SNR now tracks TransEdit MER on Astra 23.5°E / 19.2°E TPs |
+
+```c
+stb0899_calibrate_snr_db10()  /* +60 in dB/10 units, cap 20 dB */
+```
+
+Verify symbol:
+
+```bash
+strings /lib/modules/$(uname -r)/updates/skystar/stb0899.ko | grep stb0899_calibrate_snr
+```
+
+**Note:** Strength (Patch 2) unchanged. Calibration applies to **DVB-S2 Es/N0 path only** (not `est==1/2` saturation cases).
+
+---
+
 ## Install / reinstall
 
 ```bash
@@ -60,7 +82,7 @@ After kernel update — run the same (`install-skystar-driver.sh` rebuilds from 
 
 ```bash
 modinfo stb0899 | grep updates/skystar
-strings /lib/modules/$(uname -r)/updates/skystar/stb0899.ko | grep stb0899_to_strength_scale
+strings /lib/modules/$(uname -r)/updates/skystar/stb0899.ko | grep -E 'stb0899_to_strength_scale|stb0899_calibrate_snr'
 ```
 
 With a locked transponder:
@@ -69,7 +91,7 @@ With a locked transponder:
 curl -s http://127.0.0.1:8080/state.json | python3 -m json.tool
 ```
 
-**Expected:** `strength` and `snr` in a sensible range (e.g. tens–nineties on a good TP), **not** stuck at 1–2.
+**Expected:** `strength` ~60–80 % and `snr` ~45–55 % on a good DVB-S2 TP (aligned with ~11 dB MER), **not** stuck at 1–2 or ~25 % SNR alone.
 
 Full test: [TEST-SCENARIOS.md](TEST-SCENARIOS.md) Test 5c.
 
