@@ -46,7 +46,9 @@ sudo apt install -y build-essential "linux-headers-$(uname -r)" git cmake \
 ls /lib/firmware/dvb-usb-az6027-03.fw
 ```
 
-### 2. Patched stb0899 (DVB-S2)
+### 2. Patched stb0899 (DVB-S2 + signal/SNR)
+
+Builds from [`stb0899-module/`](stb0899-module/) — see [PATCHES.md](PATCHES.md).
 
 ```bash
 sudo bash scripts/install-skystar-driver.sh

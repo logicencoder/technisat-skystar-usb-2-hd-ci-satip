@@ -926,6 +926,26 @@ static int stb0899_table_lookup(const struct stb0899_tab *tab, int max, int val)
 	return res;
 }
 
+/* Map dBm/10 to DVB API 0..65535 (userspace / minisatip expect full scale) */
+static u16 stb0899_to_strength_scale(int dbm10)
+{
+	if (dbm10 <= -750)
+		return 0;
+	if (dbm10 >= -250)
+		return 65535;
+	return (u16)(((dbm10 + 750) * 65535) / 500);
+}
+
+/* Map C/N dB/10 to DVB API 0..65535 */
+static u16 stb0899_to_snr_scale(int cn_db10)
+{
+	if (cn_db10 <= 0)
+		return 0;
+	if (cn_db10 >= 200)
+		return 65535;
+	return (u16)((cn_db10 * 65535) / 200);
+}
+
 static int stb0899_read_signal_strength(struct dvb_frontend *fe, u16 *strength)
 {
 	struct stb0899_state *state		= fe->demodulator_priv;
@@ -943,10 +963,9 @@ static int stb0899_read_signal_strength(struct dvb_frontend *fe, u16 *strength)
 
 				reg = stb0899_read_reg(state, STB0899_AGCIQIN);
 				val = (s32)(s8)STB0899_GETFIELD(AGCIQVALUE, reg);
-
-				*strength = stb0899_table_lookup(stb0899_dvbsrf_tab, ARRAY_SIZE(stb0899_dvbsrf_tab) - 1, val);
-				*strength += 750;
-				dprintk(state->verbose, FE_DEBUG, 1, "AGCIQVALUE = 0x%02x, C = %d * 0.1 dBm",
+				*strength = stb0899_to_strength_scale(
+					stb0899_table_lookup(stb0899_dvbsrf_tab, ARRAY_SIZE(stb0899_dvbsrf_tab) - 1, val));
+				dprintk(state->verbose, FE_DEBUG, 1, "AGCIQVALUE = 0x%02x, strength scale %u",
 					val & 0xff, *strength);
 			}
 		}
@@ -956,9 +975,9 @@ static int stb0899_read_signal_strength(struct dvb_frontend *fe, u16 *strength)
 			reg = STB0899_READ_S2REG(STB0899_S2DEMOD, IF_AGC_GAIN);
 			val = STB0899_GETFIELD(IF_AGC_GAIN, reg);
 
-			*strength = stb0899_table_lookup(stb0899_dvbs2rf_tab, ARRAY_SIZE(stb0899_dvbs2rf_tab) - 1, val);
-			*strength += 950;
-			dprintk(state->verbose, FE_DEBUG, 1, "IF_AGC_GAIN = 0x%04x, C = %d * 0.1 dBm",
+			*strength = stb0899_to_strength_scale(
+				stb0899_table_lookup(stb0899_dvbs2rf_tab, ARRAY_SIZE(stb0899_dvbs2rf_tab) - 1, val));
+			dprintk(state->verbose, FE_DEBUG, 1, "IF_AGC_GAIN = 0x%04x, strength scale %u",
 				val & 0x3fff, *strength);
 		}
 		break;
@@ -990,8 +1009,8 @@ static int stb0899_read_snr(struct dvb_frontend *fe, u16 *snr)
 				stb0899_read_regs(state, STB0899_NIRM, buf, 2);
 				val = MAKEWORD16(buf[0], buf[1]);
 
-				*snr = stb0899_table_lookup(stb0899_cn_tab, ARRAY_SIZE(stb0899_cn_tab) - 1, val);
-				dprintk(state->verbose, FE_DEBUG, 1, "NIR = 0x%02x%02x = %u, C/N = %d * 0.1 dBm\n",
+				*snr = stb0899_to_snr_scale(stb0899_table_lookup(stb0899_cn_tab, ARRAY_SIZE(stb0899_cn_tab) - 1, val));
+				dprintk(state->verbose, FE_DEBUG, 1, "NIR = 0x%02x%02x = %u, snr scale %u\n",
 					buf[0], buf[1], val, *snr);
 			}
 		}
@@ -1014,9 +1033,9 @@ static int stb0899_read_snr(struct dvb_frontend *fe, u16 *snr)
 				/* snr(dBm/10) = -10*(log(est)-log(quant^2)) => snr(dBm/10) = (100*log(quant^2)-100*log(est))/10 */
 				val = (quantn - estn) / 10;
 			}
-			*snr = val;
-			dprintk(state->verbose, FE_DEBUG, 1, "Es/N0 quant = %d (%d) estimate = %u (%d), C/N = %d * 0.1 dBm",
-				quant, quantn, est, estn, val);
+			*snr = stb0899_to_snr_scale(val);
+			dprintk(state->verbose, FE_DEBUG, 1, "Es/N0 quant = %d (%d) estimate = %u (%d), snr scale %u",
+				quant, quantn, est, estn, *snr);
 		}
 		break;
 	default:

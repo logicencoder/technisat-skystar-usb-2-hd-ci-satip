@@ -2,7 +2,7 @@
 
 > **Card:** **TechniSat SkyStar USB 2 HD CI** · USB **`14f7:0001`**
 
-Stock Linux driver is **broken for DVB-S2** on this card — with the **patched `stb0899`** the card is **fully functional**. You do **not** need to discard it.
+Stock Linux driver is **broken for DVB-S2** on this card — with the **patched `stb0899`** (DVB-S2 + **signal/SNR scale**) the card is **fully functional**. You do **not** need to discard it.
 
 **After patch — tested, working:**
 
@@ -10,6 +10,7 @@ Stock Linux driver is **broken for DVB-S2** on this card — with the **patched 
 |---------|--------|
 | DVB-S2 lock / tune | ✅ |
 | FTA playback | ✅ |
+| **Signal / SNR display** (DVBViewer, TransEdit, minisatip web) | ✅ |
 | **minisatip Sat>IP** (RTSP port 8554) | ✅ |
 | **DiSEqC switch** (multi-dish, port switching) | ✅ |
 | **DVBViewer** + **TransEdit** (scan, NIT, full transponder) | ✅ |
@@ -31,7 +32,7 @@ Ubuntu driver patch + **minisatip Sat>IP server** for **FTA** channels.
 | Part | What |
 |------|------|
 | **Card** | TechniSat SkyStar USB 2 HD CI (`14f7:0001`) |
-| **Fix** | Patched `stb0899.ko` for DVB-S2 |
+| **Fix** | Patched `stb0899.ko` — **DVB-S2 lock** + **signal/SNR 0–65535 scale** ([PATCHES.md](PATCHES.md)) |
 | **Sat>IP server** | minisatip — port **8554**, web **8080** |
 | **Channels** | **FTA only** |
 
@@ -70,6 +71,7 @@ rtsp://SERVER_IP:8554/?src=1&freq=12344&pol=h&sr=29900&msys=dvbs2&mtype=8psk&fec
 lsusb | grep 14f7
 ls /dev/dvb/adapter0/
 modinfo stb0899 | grep updates/skystar
+strings /lib/modules/$(uname -r)/updates/skystar/stb0899.ko | grep stb0899_to_strength_scale
 pgrep -a minisatip
 ffprobe "rtsp://127.0.0.1:8554/?src=1&freq=12344&pol=h&sr=29900&msys=dvbs2&mtype=8psk&fec=34&pids=1310,1320"
 ```
@@ -82,6 +84,7 @@ Tests: [TEST-SCENARIOS.md](TEST-SCENARIOS.md)
 
 | File | Content |
 |------|---------|
+| [PATCHES.md](PATCHES.md) | **Driver patches — DVB-S2 + signal/SNR (tested)** |
 | [SATIP-CLIENT-SETTINGS.md](SATIP-CLIENT-SETTINGS.md) | **Sat>IP — DVBViewer, TransEdit, DiSEqC, VLC** |
 | [HARDWARE-IDENTITY.md](HARDWARE-IDENTITY.md) | Card name & USB ID |
 | [PROBLEM-AND-SOLUTION.md](PROBLEM-AND-SOLUTION.md) | What was broken & why |

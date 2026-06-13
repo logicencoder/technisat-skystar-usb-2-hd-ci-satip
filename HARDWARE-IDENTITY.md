@@ -31,7 +31,7 @@ Wrong USB ID → this guide does not apply.
 |-----------|--------|
 | `dvb_usb_az6027` | Stock Ubuntu kernel |
 | `stb6100` | Stock Ubuntu kernel |
-| `stb0899` | **Patched** — `updates/skystar/stb0899.ko` (required for DVB-S2) |
+| `stb0899` | **Patched** — `updates/skystar/stb0899.ko` (**DVB-S2** + **signal/SNR scale** — [PATCHES.md](PATCHES.md)) |
 | Firmware | `/lib/firmware/dvb-usb-az6027-03.fw` |
 
 ---
@@ -40,7 +40,7 @@ Wrong USB ID → this guide does not apply.
 
 ```
 TechniSat SkyStar USB 2 HD CI (14f7:0001)
-  → Ubuntu + patched stb0899
+  → Ubuntu + patched stb0899 (DVB-S2 + signal/SNR)
   → minisatip Sat>IP server (port 8554)
   → FTA channels (VLC, DVBViewer Sat>IP — no codes)
 ```

@@ -174,10 +174,17 @@ One test example (not universal): 23.5°E→port 1, 4.8°E→port 2, 19.2°E→p
 - Open any **FTA** channel from the list
 - Or manual tune via Sat>IP URL in advanced/stream options
 
-### 6. Known quirk
+### 6. Signal / SNR display
 
-- Signal strength may show **~2%** — **ignore if picture plays**
-- This is a driver reporting issue on **TechniSat SkyStar USB 2 HD CI**, not bad LNB
+**Tested** — with the **patched `stb0899` from this repo** ([PATCHES.md](PATCHES.md)), DVBViewer and TransEdit show **realistic signal and SNR** (not stuck at ~1–2 %).
+
+If meters still show ~2 % while video plays:
+
+1. Reinstall driver: `sudo bash scripts/install-skystar-driver.sh`
+2. Reboot, restart minisatip
+3. Confirm: `strings .../stb0899.ko | grep stb0899_to_strength_scale`
+
+This is **not** bad LNB — old stock driver scale vs Sat>IP clients.
 
 ### What we do NOT document here
 
@@ -243,6 +250,7 @@ Disable SSDP if needed: add `-G` to minisatip start flags in `scripts/start-mini
 | Client tested | **DVBViewer Pro**, **TransEdit** (Windows) — FTA |
 | DiSEqC | **Switch tested** — port switching works; **client** maps port → dish |
 | Also works | VLC, ffprobe, full transponder (`pids=all` with `-k`) |
+| Signal/SNR | **Tested** — correct % with patched driver ([PATCHES.md](PATCHES.md)) |
 | Test example | Astra 23.5°E — 12344 H 29900 (CT24 FTA) |
 
 ---
@@ -257,6 +265,6 @@ Disable SSDP if needed: add `-G` to minisatip start flags in `scripts/start-mini
 | TransEdit scan fails | RTSP device? **`-k`**? Correct **DiSEqC Pos** for *your* wiring? |
 | Wrong satellite / no lock | Wrong **DiSEqC port** in client — check OUT→dish on physical switch |
 | “Cannot provide transponder” | Single tuner — scan one sat at a time; some TPs weak — retry |
-| 2% signal | Ignore if playback works |
+| ~2% signal / SNR | Old driver — reinstall from repo ([PATCHES.md](PATCHES.md)), reboot |
 
 Server-side: [SKYSTAR-GUIDE.md](SKYSTAR-GUIDE.md)

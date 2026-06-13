@@ -29,7 +29,7 @@ cd "$DIR"
 git remote remove origin 2>/dev/null || true
 git remote add origin "https://${TOKEN}@github.com/${USER}/${REPO}.git"
 
-DESC="TechniSat SkyStar USB 2 HD CI (14f7:0001): DVB-S2 patch + minisatip Sat>IP FTA — fixes broken stock stb0899 driver — DVBViewer & TransEdit tested, full transponder"
+DESC="TechniSat SkyStar USB 2 HD CI (14f7:0001): patched stb0899 (DVB-S2 + signal/SNR) + minisatip Sat>IP FTA — DVBViewer & TransEdit tested"
 
 curl -sS -X POST -H "Authorization: token ${TOKEN}" \
   -H "Content-Type: application/json" \

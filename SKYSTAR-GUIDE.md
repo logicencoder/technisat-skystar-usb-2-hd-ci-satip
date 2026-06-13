@@ -17,6 +17,7 @@ See [LLM-INSTRUCTIONS.md](LLM-INSTRUCTIONS.md). **Do not** run `modprobe -r` loo
 ```
 stock kernel:  dvb_core, dvb_usb, stb6100, dvb_usb_az6027
 patched OOT:   stb0899  → updates/skystar/stb0899.ko
+               (DVB-S2 lock + signal/SNR scale — see PATCHES.md)
 TBS media:     DISABLED (backup/ folder)
 ```
 
@@ -45,7 +46,11 @@ Ports: RTSP **8554**, web **8080**. Adapter: **0** (`-e 0`).
 rtsp://SERVER_IP:8554/?src=1&freq=12344&pol=h&sr=29900&msys=dvbs2&mtype=8psk&fec=34&pids=1310,1320
 ```
 
-~2% signal in some clients = driver quirk. Ignore if video plays.
+Signal/SNR: use **patched `stb0899` from this repo** ([PATCHES.md](PATCHES.md)). If meters show ~2 %, rebuild driver and reboot.
+
+```bash
+curl -s http://127.0.0.1:8080/state.json | python3 -m json.tool
+```
 
 ---
 

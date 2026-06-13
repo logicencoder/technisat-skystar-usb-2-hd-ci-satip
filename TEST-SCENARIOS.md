@@ -82,6 +82,26 @@ timeout 10 ffprobe -v error -show_entries stream=codec_type -of csv=p=0 \
 
 ---
 
+## Test 5c — Signal / SNR (optional)
+
+Tune a known TP (repeat Test 5 or play in DVBViewer), then:
+
+```bash
+curl -s http://127.0.0.1:8080/state.json | python3 -m json.tool
+```
+
+**Expected:** `strength` and `snr` reflect a locked transponder (not stuck at 1–2).
+
+Confirm patched module includes signal scale:
+
+```bash
+strings /lib/modules/$(uname -r)/updates/skystar/stb0899.ko | grep stb0899_to_strength_scale
+```
+
+Details: [PATCHES.md](PATCHES.md)
+
+---
+
 ## Test 6 — DVBViewer Sat>IP (optional, FTA)
 
 1. Add Sat>IP server: `SERVER_IP:8554`
@@ -159,6 +179,7 @@ Repeat Tests 2, 3, 5.
 | 4 | minisatip | ports 8554/8080 |
 | 5 | FTA stream | ffprobe h264 |
 | 5b | Full transponder | `pids=all` streams |
+| 5c | Signal / SNR | state.json + patched .ko symbol |
 | 6 | DVBViewer Sat>IP FTA | scan + play (optional) |
 | 6b | TransEdit Sat>IP | scan + NIT (optional) |
 | 6c | DiSEqC switch | port switching via `src=` (optional) |

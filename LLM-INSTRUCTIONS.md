@@ -22,11 +22,12 @@ sudo reboot
 
 ## What is fixed (do not break)
 
-1. Patched `stb0899.ko` in `updates/skystar/`
+1. Patched `stb0899.ko` in `updates/skystar/` — **DVB-S2 lock + signal/SNR scale** ([PATCHES.md](PATCHES.md))
 2. Stock kernel `dvb_usb_az6027`
 3. TBS media_build in `backup/` — NOT in `updates/extra/`
 4. minisatip `-e 0`
 5. DVB-S2 FTA streaming works
+6. Signal/SNR display tested — do not document “ignore 2%” if repo patch is installed
 
 ---
 

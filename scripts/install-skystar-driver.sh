@@ -21,5 +21,5 @@ udevadm control --reload-rules
 udevadm trigger
 depmod -a
 
-echo "→ Patched stb0899 installed."
+echo "→ Patched stb0899 installed (DVB-S2 + signal/SNR scale)."
 echo "→ REBOOT recommended, then: scripts/start-minisatip.sh"
