@@ -1,9 +1,9 @@
 #!/bin/bash
-# Push skystar-satip-docs to GitHub (logicencoder)
+# Push technisat-skystar-satip-minisatip-dvbviewer-ubuntu to GitHub (logicencoder)
 # Token is on SOL server: sol@192.168.1.103 ~/.gitpush_secret.txt
 set -euo pipefail
 
-REPO="skystar-satip-docs"
+REPO="technisat-skystar-satip-minisatip-dvbviewer-ubuntu"
 USER="logicencoder"
 DIR="$(cd "$(dirname "$0")" && pwd)"
 SOL_KEY="/home/enigma2/lojzo/ssh-key-2024-05-16.key"
@@ -31,7 +31,7 @@ git remote add origin "https://${TOKEN}@github.com/${USER}/${REPO}.git"
 
 curl -sS -X POST -H "Authorization: token ${TOKEN}" \
   -H "Content-Type: application/json" \
-  -d "{\"name\":\"${REPO}\",\"private\":true,\"description\":\"SkyStar USB Sat>IP + minisatip + DVBViewer docs\"}" \
+  -d "{\"name\":\"${REPO}\",\"private\":false,\"description\":\"TechniSat SkyStar USB 14f7:0001 DVB-S2 patch + minisatip Sat>IP + DVBViewer on Ubuntu — full guide\"}" \
   "https://api.github.com/user/repos" >/dev/null || true
 
 git push -u origin main

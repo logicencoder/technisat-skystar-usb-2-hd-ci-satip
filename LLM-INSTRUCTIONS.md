@@ -150,5 +150,5 @@ sudo reboot
 ## References
 
 - Main guide: `~/sat_stuff/SKYSTAR-GUIDE.md`
-- GitHub: https://github.com/logicencoder/skystar-satip-docs
+- GitHub: https://github.com/logicencoder/technisat-skystar-satip-minisatip-dvbviewer-ubuntu
 - Patch origin: OSMC/VDR forums (stb0899 I2C DVB-S2 fix for 14f7:0001)

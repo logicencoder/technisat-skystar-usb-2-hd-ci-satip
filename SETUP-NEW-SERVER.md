@@ -1,19 +1,18 @@
-# Setup a NEW server from scratch (LLM / human guide)
+# Setup a NEW server from scratch
 
-> **Goal:** TechniSat SkyStar USB 2 HD CI (`14f7:0001`) streaming via **minisatip** to **DVBViewer** on Windows.  
-> **Repo:** https://github.com/logicencoder/skystar-satip-docs
+> **Human?** Read [README.md](README.md) and [PROBLEM-AND-SOLUTION.md](PROBLEM-AND-SOLUTION.md) first — they explain *why* this exists.  
+> **Then run the tests in** [TEST-SCENARIOS.md](TEST-SCENARIOS.md) after install.
 
----
+> **Goal:** TechniSat SkyStar USB 2 HD CI (`14f7:0001`) → **minisatip** → **DVBViewer** on Windows.  
+> **Repo:** https://github.com/logicencoder/technisat-skystar-satip-minisatip-dvbviewer-ubuntu
 
-## For AI agents — read this file end-to-end before changing anything
+## Quick install (automated)
 
-Also read: [LLM-INSTRUCTIONS.md](LLM-INSTRUCTIONS.md)
-
-**One-command install (Ubuntu, root):**
+Also read: [LLM-INSTRUCTIONS.md](LLM-INSTRUCTIONS.md) if you are an AI assistant.
 
 ```bash
-git clone https://github.com/logicencoder/skystar-satip-docs.git
-cd skystar-satip-docs
+git clone https://github.com/logicencoder/technisat-skystar-satip-minisatip-dvbviewer-ubuntu.git
+cd technisat-skystar-satip-minisatip-dvbviewer-ubuntu
 cp config.env.example config.env   # optional edits
 sudo bash scripts/install-new-server.sh
 sudo reboot
@@ -44,8 +43,8 @@ That script does **everything**: packages, patched `stb0899` build, udev, modpro
 ### 1. Clone repo
 
 ```bash
-git clone https://github.com/logicencoder/skystar-satip-docs.git
-cd skystar-satip-docs
+git clone https://github.com/logicencoder/technisat-skystar-satip-minisatip-dvbviewer-ubuntu.git
+cd technisat-skystar-satip-minisatip-dvbviewer-ubuntu
 cp config.env.example config.env
 ```
 
@@ -134,7 +133,7 @@ rtsp://YOUR_SERVER_IP:8554/?src=1&freq=12344&pol=h&sr=29900&msys=dvbs2&mtype=8ps
 Every new kernel requires rebuilding patched `stb0899`:
 
 ```bash
-cd skystar-satip-docs
+cd technisat-skystar-satip-minisatip-dvbviewer-ubuntu
 sudo bash scripts/install-skystar-driver.sh
 sudo reboot
 ./scripts/start-minisatip.sh
@@ -147,7 +146,7 @@ Stock `az6027` from the new kernel is fine — only `stb0899` needs rebuild.
 ## Repository layout
 
 ```
-skystar-satip-docs/
+technisat-skystar-satip-minisatip-dvbviewer-ubuntu/
 ├── SETUP-NEW-SERVER.md      ← this file (start here on new server)
 ├── LLM-INSTRUCTIONS.md      ← AI safety rules
 ├── SKYSTAR-GUIDE.md         ← full reference / troubleshooting
@@ -216,7 +215,7 @@ USM_PATH=/home/enigma2/universal-service-manager/usm.py
 ## LLM prompt for new server
 
 ```
-Clone https://github.com/logicencoder/skystar-satip-docs
+Clone https://github.com/logicencoder/technisat-skystar-satip-minisatip-dvbviewer-ubuntu
 Read SETUP-NEW-SERVER.md and LLM-INSTRUCTIONS.md completely before any changes.
 Run: sudo bash scripts/install-new-server.sh && sudo reboot
 Then: ./scripts/start-minisatip.sh

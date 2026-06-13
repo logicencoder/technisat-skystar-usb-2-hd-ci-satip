@@ -269,7 +269,7 @@ sudo reboot
 
 ## GitHub repository
 
-Documentation and scripts: **https://github.com/logicencoder/skystar-satip-docs**
+Documentation and scripts: **https://github.com/logicencoder/technisat-skystar-satip-minisatip-dvbviewer-ubuntu**
 
 **New server setup:** see [SETUP-NEW-SERVER.md](SETUP-NEW-SERVER.md) in the repo.
 
