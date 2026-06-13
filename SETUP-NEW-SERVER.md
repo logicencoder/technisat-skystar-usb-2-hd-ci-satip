@@ -1,9 +1,12 @@
-# Setup a NEW server from scratch
+# Setup a NEW server — TechniSat SkyStar USB 2 HD CI
 
-> **Human?** Read [README.md](README.md) and [PROBLEM-AND-SOLUTION.md](PROBLEM-AND-SOLUTION.md) first — they explain *why* this exists.  
+> **Card (exact model):** **TechniSat SkyStar USB 2 HD CI** · USB **`14f7:0001`**  
+> **Hardware details:** [HARDWARE-IDENTITY.md](HARDWARE-IDENTITY.md)
+
+> **Human?** Read [README.md](README.md) and [PROBLEM-AND-SOLUTION.md](PROBLEM-AND-SOLUTION.md) first.  
 > **Then run the tests in** [TEST-SCENARIOS.md](TEST-SCENARIOS.md) after install.
 
-> **Goal:** TechniSat SkyStar USB 2 HD CI (`14f7:0001`) → **minisatip** → **DVBViewer** on Windows.  
+> **Goal:** **TechniSat SkyStar USB 2 HD CI** (`14f7:0001`) → **minisatip** → **DVBViewer** on Windows.  
 > **Repo:** https://github.com/logicencoder/technisat-skystar-satip-minisatip-dvbviewer-ubuntu
 
 ## Quick install (automated)
@@ -29,7 +32,7 @@ That script does **everything**: packages, patched `stb0899` build, udev, modpro
 
 | Item | Detail |
 |------|--------|
-| Tuner | TechniSat **SkyStar USB 2 HD CI** USB `14f7:0001` |
+| Tuner | **TechniSat SkyStar USB 2 HD CI** · USB **`14f7:0001`** |
 | LNB | Connected to tuner (e.g. Astra 23.5°E) |
 | OS | Ubuntu 22.04 / 24.04 (or Debian with kernel headers) |
 | Client | DVBViewer Pro on Windows (CAM on Windows) |
@@ -215,10 +218,11 @@ USM_PATH=/home/enigma2/universal-service-manager/usm.py
 ## LLM prompt for new server
 
 ```
+Hardware: TechniSat SkyStar USB 2 HD CI — USB 14f7:0001 ONLY
 Clone https://github.com/logicencoder/technisat-skystar-satip-minisatip-dvbviewer-ubuntu
-Read SETUP-NEW-SERVER.md and LLM-INSTRUCTIONS.md completely before any changes.
+Read HARDWARE-IDENTITY.md, PROBLEM-AND-SOLUTION.md and LLM-INSTRUCTIONS.md completely before any changes.
 Run: sudo bash scripts/install-new-server.sh && sudo reboot
 Then: ./scripts/start-minisatip.sh
 Do NOT use modprobe -r loops. Do NOT restore TBS media_build to updates/extra/.
-SkyStar is adapter 0. Patched stb0899 is mandatory for DVB-S2.
+TechniSat SkyStar USB 2 HD CI is adapter 0. Patched stb0899 is mandatory for DVB-S2.
 ```

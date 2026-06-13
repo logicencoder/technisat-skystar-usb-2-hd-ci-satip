@@ -7,7 +7,7 @@ set -euo pipefail
 source "$(dirname "$0")/lib/common.sh"
 require_root
 
-echo "=== SkyStar new server install ==="
+echo "=== Install: TechniSat SkyStar USB 2 HD CI (14f7:0001) ==="
 echo "Repo: $REPO_ROOT"
 
 # --- packages ---

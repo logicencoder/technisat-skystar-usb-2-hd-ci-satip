@@ -1,7 +1,10 @@
-# SkyStar USB 2 HD CI + minisatip + DVBViewer — Complete Guide
+# TechniSat SkyStar USB 2 HD CI + minisatip + DVBViewer — Complete Guide
+
+> **Card (exact model):** **TechniSat SkyStar USB 2 HD CI** · USB **`14f7:0001`**  
+> **Hardware details:** [HARDWARE-IDENTITY.md](HARDWARE-IDENTITY.md)
 
 > **Server:** Ubuntu 24.04, IP `192.168.1.97`, user `enigma2`  
-> **Tuner:** TechniSat SkyStar USB 2 HD CI (`14f7:0001`)  
+> **Tuner:** **TechniSat SkyStar USB 2 HD CI** (`14f7:0001`)  
 > **Client:** DVBViewer Pro on Windows (~`192.168.1.196`)  
 > **Satellite:** Astra 23.5°E (test TP: 12344 H 29900 DVB-S2 8PSK — CT24)  
 > **Kernel (current):** `6.8.0-124-generic`

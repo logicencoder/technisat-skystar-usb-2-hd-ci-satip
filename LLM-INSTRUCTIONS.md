@@ -1,6 +1,11 @@
-# Instructions for AI/LLM Agents — SkyStar Sat>IP Setup
+# Instructions for AI/LLM Agents — TechniSat SkyStar USB 2 HD CI + Sat>IP
 
-> **Purpose:** This file exists so the next LLM **does not break the system**. Read this ENTIRE file before making any changes.
+> **MANDATORY hardware (exact model):** **TechniSat SkyStar USB 2 HD CI**  
+> **USB ID:** `14f7:0001` (TechniSat Digital GmbH)  
+> **Full specs:** [HARDWARE-IDENTITY.md](HARDWARE-IDENTITY.md)
+
+> **Purpose:** This file exists so the next LLM **does not break the system**. Read this ENTIRE file before making any changes.  
+> **This guide applies ONLY to TechniSat SkyStar USB 2 HD CI — not other SkyStar or TechniSat models.**
 
 ---
 
@@ -17,7 +22,7 @@
 ---
 
 - Linux server `192.168.1.97`, Ubuntu 24.04, user `enigma2`
-- **Active tuner:** TechniSat SkyStar USB 2 HD CI (`14f7:0001`)
+- **Active tuner:** **TechniSat SkyStar USB 2 HD CI** (`14f7:0001`)
 - **Sat>IP:** minisatip port 8554, web 8080
 - **Client:** DVBViewer on Windows, CAM on Windows
 - **TBS 5590:** removed, TBS drivers **disabled** in backup
@@ -149,6 +154,7 @@ sudo reboot
 
 ## References
 
-- Main guide: `~/sat_stuff/SKYSTAR-GUIDE.md`
+- **Hardware:** [HARDWARE-IDENTITY.md](HARDWARE-IDENTITY.md) — **TechniSat SkyStar USB 2 HD CI**
+- Main guide: [SKYSTAR-GUIDE.md](SKYSTAR-GUIDE.md)
 - GitHub: https://github.com/logicencoder/technisat-skystar-satip-minisatip-dvbviewer-ubuntu
-- Patch origin: OSMC/VDR forums (stb0899 I2C DVB-S2 fix for 14f7:0001)
+- Patch origin: OSMC/VDR forums (stb0899 DVB-S2 fix for **TechniSat SkyStar USB 2 HD CI** `14f7:0001`)

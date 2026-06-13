@@ -1,4 +1,7 @@
-# Test Scenarios — verify the full SkyStar + Sat>IP + DVBViewer setup
+# Test Scenarios — TechniSat SkyStar USB 2 HD CI + Sat>IP + DVBViewer
+
+> **Card (exact model):** **TechniSat SkyStar USB 2 HD CI** · USB **`14f7:0001`**  
+> **Hardware details:** [HARDWARE-IDENTITY.md](HARDWARE-IDENTITY.md)
 
 Run these tests **in order** after install and reboot. Replace `SERVER_IP` with your Linux server address (e.g. `192.168.1.97`).
 
@@ -8,8 +11,8 @@ Run these tests **in order** after install and reboot. Replace `SERVER_IP` with 
 
 | Check | Command / action | Expected |
 |-------|------------------|----------|
-| SkyStar plugged in | Visual | USB cable to server |
-| LNB cable | Visual | Connected to SkyStar |
+| **TechniSat SkyStar USB 2 HD CI** plugged in | Visual — USB cable to server | Stick connected |
+| LNB cable | Visual | Connected to **TechniSat SkyStar USB 2 HD CI** |
 | Dish | Visual | Pointed at your satellite (e.g. Astra 23.5°E) |
 | Network | Ping from Windows | `ping SERVER_IP` replies |
 

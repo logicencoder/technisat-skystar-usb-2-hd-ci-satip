@@ -1,16 +1,19 @@
-# TechniSat SkyStar USB → Sat>IP (minisatip) → DVBViewer on Windows
+# TechniSat SkyStar USB 2 HD CI → Sat>IP (minisatip) → DVBViewer on Windows
+
+> **Card (exact model):** **TechniSat SkyStar USB 2 HD CI** · USB **`14f7:0001`** · TechniSat Digital GmbH  
+> **Hardware details:** [HARDWARE-IDENTITY.md](HARDWARE-IDENTITY.md)
 
 **Ubuntu server + TechniSat SkyStar USB 2 HD CI + minisatip + DVBViewer Pro**
 
-This repository is a **complete, tested setup guide** for watching satellite TV (including **DVB-S2**) on Windows via Sat>IP, using a TechniSat SkyStar USB tuner on a Linux server.
+This repository is a **complete, tested setup guide** for watching satellite TV (including **DVB-S2**) on Windows via Sat>IP, using the **TechniSat SkyStar USB 2 HD CI** on a Linux server.
 
-It is written for **normal users** who want to install it themselves, and for **developers/AI** who must not break a working system while fixing it.
+Written for **normal users** and for **AI assistants** — both should read [HARDWARE-IDENTITY.md](HARDWARE-IDENTITY.md) first.
 
 ---
 
 ## What this setup does (in plain language)
 
-1. **Linux server** (Ubuntu) has the SkyStar USB stick plugged in with the dish/LNB cable.
+1. **Linux server** (Ubuntu) has the **TechniSat SkyStar USB 2 HD CI** plugged in with the dish/LNB cable.
 2. **minisatip** on the server tunes transponders and streams TV over the network (Sat>IP / RTSP).
 3. **DVBViewer Pro** on your **Windows PC** connects to the server, scans channels, and decodes paid channels with your **CAM on Windows** (not on the server).
 
@@ -20,7 +23,7 @@ No Enigma2 box mode. No OSCam on the server required for the basic workflow.
 
 ## What was broken before (real problem we solved)
 
-We switched from a **TBS 5590** card (which worked) to a **TechniSat SkyStar USB 2 HD CI** (`USB 14f7:0001`). After the switch:
+We switched from a **TBS 5590** card (which worked) to the **TechniSat SkyStar USB 2 HD CI** (`USB 14f7:0001`). After the switch:
 
 | Symptom | What you saw |
 |---------|----------------|
@@ -29,11 +32,11 @@ We switched from a **TBS 5590** card (which worked) to a **TechniSat SkyStar USB
 | minisatip empty | RTSP connected but no picture |
 | Wrong signal display | Sometimes **~2% signal** even when it later worked (driver quirk) |
 | Driver errors | Kernel log: `Unknown symbol stb0899_attach`, `frequency out of range` |
-| System conflicts | Old **TBS media_build** drivers fighting the SkyStar driver |
+| System conflicts | Old **TBS media_build** drivers fighting the **TechniSat SkyStar USB 2 HD CI** driver |
 
 ### Root cause (why it failed)
 
-1. **Main bug:** The **stock Linux `stb0899` driver** has a known bug for **DVB-S2 on SkyStar 14f7:0001**. A patch exists (OSMC/VDR community) but was **never merged into the mainline kernel**. Without the patch, DVB-S2 simply does not work on this stick.
+1. **Main bug:** The **stock Linux `stb0899` driver** has a known bug for **DVB-S2 on TechniSat SkyStar USB 2 HD CI (`14f7:0001`)**. A patch exists (OSMC/VDR community) but was **never merged into the mainline kernel**. Without the patch, DVB-S2 does not work on this card.
 
 2. **Second problem:** Leftover **TBS 5590 custom drivers** in `/lib/modules/.../updates/extra/media/` caused **symbol version conflicts** — the SkyStar USB driver (`az6027`) could not load against the wrong `stb0899`.
 
@@ -43,15 +46,17 @@ We switched from a **TBS 5590** card (which worked) to a **TechniSat SkyStar USB
 
 | Fix | Why |
 |-----|-----|
-| **Patched `stb0899.ko`** built against your Ubuntu kernel | DVB-S2 lock on SkyStar |
+| **Patched `stb0899.ko`** built against your Ubuntu kernel | DVB-S2 lock on **TechniSat SkyStar USB 2 HD CI** |
 | **Stock kernel `az6027`** + patched `stb0899` together | Correct driver combination |
 | **TBS media_build moved out** of module path | No symbol conflicts |
-| minisatip **`-e 0`** | SkyStar is DVB adapter **0** |
-| **Enigma settings** moved aside | SkyStar demux works in normal mode |
-| **USB autosuspend off** | Stick stays alive |
+| minisatip **`-e 0`** | **TechniSat SkyStar USB 2 HD CI** is DVB adapter **0** |
+| **Enigma settings** moved aside | Demux works in normal mode |
+| **USB autosuspend off** | Card stays alive |
 | **minisatip** on port **8554**, web **8080** | DVBViewer Sat>IP client |
 
 After these fixes: **scan works, NIT finds transponders, DVB-S2 plays, CAM on Windows works.**
+
+Full story: [PROBLEM-AND-SOLUTION.md](PROBLEM-AND-SOLUTION.md)
 
 ---
 
@@ -65,66 +70,40 @@ sudo reboot
 ./scripts/start-minisatip.sh
 ```
 
-Or enable auto-start:
-
-```bash
-sudo systemctl start minisatip-skystar
-sudo systemctl enable minisatip-skystar
-```
+Or auto-start: `sudo systemctl enable --now minisatip-skystar`
 
 **Detailed walkthrough:** [SETUP-NEW-SERVER.md](SETUP-NEW-SERVER.md)
 
 ---
 
-## Test everything (copy-paste checklist)
+## Test everything
 
-See **[TEST-SCENARIOS.md](TEST-SCENARIOS.md)** for the full list. Short version:
+**[TEST-SCENARIOS.md](TEST-SCENARIOS.md)** — 11 step-by-step tests (USB, driver, RTSP, DVBViewer, CAM, reboot).
 
-### On the Linux server
+Quick check:
 
 ```bash
-# 1. USB stick visible
-lsusb | grep 14f7
-
-# 2. DVB device exists
+lsusb | grep 14f7   # TechniSat SkyStar USB 2 HD CI
 ls /dev/dvb/adapter0/
-
-# 3. Correct patched driver loaded
-modinfo stb0899 | grep filename
-# → .../updates/skystar/stb0899.ko
-
-# 4. minisatip running
+modinfo stb0899 | grep updates/skystar
 pgrep -a minisatip
-curl -s http://127.0.0.1:8080/ | head -5
-
-# 5. RTSP stream test (CT24, Astra 23.5°E DVB-S2)
-ffprobe "rtsp://127.0.0.1:8554/?src=1&freq=12344&pol=h&sr=29900&msys=dvbs2&mtype=8psk&fec=34&pids=1310,1320"
 ```
-
-### On Windows (DVBViewer)
-
-1. Add Sat>IP server: **your server IP**, port **8554**
-2. Run **channel scan** / NIT on Astra 23.5°E — should find transponders
-3. Open **CT24** (or any DVB-S2 channel) — picture + sound
-4. **CAM** in DVBViewer decodes subscription channels
-5. Ignore **~2% signal** if lock and playback are OK
 
 ---
 
-## Hardware & network (reference setup)
+## Hardware & network (reference)
 
-| Item | Example |
-|------|---------|
-| Server | Ubuntu 24.04, any IP (e.g. `192.168.1.97`) |
-| Tuner | TechniSat **SkyStar USB 2 HD CI** `14f7:0001` |
-| Satellite | Astra **23.5°E** (test TP below) |
-| Windows PC | DVBViewer Pro, CAM for decryption |
+| Item | Value |
+|------|--------|
+| **Tuner (exact)** | **TechniSat SkyStar USB 2 HD CI** |
+| USB ID | **`14f7:0001`** |
+| Server | Ubuntu 24.04 (example IP `192.168.1.97`) |
+| Satellite | Astra **23.5°E** |
+| Windows | DVBViewer Pro + CAM |
 | Sat>IP RTSP | port **8554** |
-| Status web page | `http://SERVER_IP:8080/` |
+| Web status | `http://SERVER_IP:8080/` |
 
-**Test transponder (DVB-S2):** 12344 MHz, Horizontal, SR 29900, 8PSK, FEC 3/4
-
-**RTSP URL template:**
+**Test transponder (DVB-S2):** 12344 MHz H, SR 29900, 8PSK — CT24
 
 ```
 rtsp://SERVER_IP:8554/?src=1&freq=12344&pol=h&sr=29900&msys=dvbs2&mtype=8psk&fec=34&pids=1310,1320
@@ -134,20 +113,18 @@ rtsp://SERVER_IP:8554/?src=1&freq=12344&pol=h&sr=29900&msys=dvbs2&mtype=8psk&fec
 
 ## Documentation map
 
-| Document | Who is it for |
-|----------|----------------|
-| **README.md** (this file) | Everyone — start here |
-| [PROBLEM-AND-SOLUTION.md](PROBLEM-AND-SOLUTION.md) | Full story: symptoms, causes, fixes |
-| [TEST-SCENARIOS.md](TEST-SCENARIOS.md) | Step-by-step tests after install |
-| [SETUP-NEW-SERVER.md](SETUP-NEW-SERVER.md) | Install from zero on a new machine |
-| [SKYSTAR-GUIDE.md](SKYSTAR-GUIDE.md) | Daily use, kernel updates, troubleshooting |
-| [LLM-INSTRUCTIONS.md](LLM-INSTRUCTIONS.md) | Rules for AI assistants (do not break the system) |
+| Document | For |
+|----------|-----|
+| [HARDWARE-IDENTITY.md](HARDWARE-IDENTITY.md) | **Exact card name & USB ID** — human + AI |
+| [PROBLEM-AND-SOLUTION.md](PROBLEM-AND-SOLUTION.md) | What was wrong and why |
+| [TEST-SCENARIOS.md](TEST-SCENARIOS.md) | Verify everything works |
+| [SETUP-NEW-SERVER.md](SETUP-NEW-SERVER.md) | Install from zero |
+| [SKYSTAR-GUIDE.md](SKYSTAR-GUIDE.md) | Daily use, kernel updates |
+| [LLM-INSTRUCTIONS.md](LLM-INSTRUCTIONS.md) | AI safety rules |
 
 ---
 
 ## After Ubuntu kernel update
-
-When Ubuntu installs a new kernel, rebuild the patched driver:
 
 ```bash
 cd technisat-skystar-satip-minisatip-dvbviewer-ubuntu
@@ -156,17 +133,16 @@ sudo reboot
 ./scripts/start-minisatip.sh
 ```
 
-Only **`stb0899`** needs rebuild — not `az6027`.
+Only **`stb0899`** needs rebuild for **TechniSat SkyStar USB 2 HD CI** — not `az6027`.
 
 ---
 
-## For AI assistants (optional)
-
-If you use Cursor/ChatGPT to manage the server, give it this **after** pointing to this repo:
+## For AI assistants
 
 ```
-Clone https://github.com/logicencoder/technisat-skystar-satip-minisatip-dvbviewer-ubuntu
-Read PROBLEM-AND-SOLUTION.md, SETUP-NEW-SERVER.md and LLM-INSTRUCTIONS.md first.
+Hardware: TechniSat SkyStar USB 2 HD CI — USB 14f7:0001 ONLY
+Clone: https://github.com/logicencoder/technisat-skystar-satip-minisatip-dvbviewer-ubuntu
+Read: HARDWARE-IDENTITY.md, PROBLEM-AND-SOLUTION.md, LLM-INSTRUCTIONS.md
 Run: sudo bash scripts/install-new-server.sh && sudo reboot
 Then: ./scripts/start-minisatip.sh
 FORBIDDEN: modprobe -r loops, USB reset, TBS media in updates/extra/
@@ -174,8 +150,9 @@ FORBIDDEN: modprobe -r loops, USB reset, TBS media in updates/extra/
 
 ---
 
-## License / credits
+## Credits
 
-- **minisatip:** https://github.com/catalinii/minisatip  
-- **stb0899 DVB-S2 patch:** community fix (OSMC/VDR forums), not in mainline kernel  
-- **This guide:** tested on Ubuntu 24.04, kernel 6.8.x, SkyStar `14f7:0001`
+- **Card:** TechniSat SkyStar USB 2 HD CI (`14f7:0001`)
+- **minisatip:** https://github.com/catalinii/minisatip
+- **stb0899 DVB-S2 patch:** community (OSMC/VDR), not in mainline kernel
+- **Tested:** Ubuntu 24.04, kernel 6.8.x

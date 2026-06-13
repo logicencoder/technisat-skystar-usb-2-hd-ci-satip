@@ -1,4 +1,7 @@
-# Problem and Solution — TechniSat SkyStar + Sat>IP + DVBViewer
+# Problem and Solution — TechniSat SkyStar USB 2 HD CI + Sat>IP + DVBViewer
+
+> **Card (exact model):** **TechniSat SkyStar USB 2 HD CI** · USB **`14f7:0001`**  
+> **Hardware details:** [HARDWARE-IDENTITY.md](HARDWARE-IDENTITY.md)
 
 This document explains **what was wrong**, **why**, and **what we did** — in language a normal person can follow.
 
