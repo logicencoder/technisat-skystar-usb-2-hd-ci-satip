@@ -4,6 +4,15 @@
 
 Replace `SERVER_IP` with your server address.
 
+**Scripts:**
+
+| Script | Purpose |
+|--------|---------|
+| `bash scripts/run-skystar-tests.sh` | Automated Tests **1–5c** with pass/fail summary |
+| `bash scripts/collect-skystar-evidence.sh` | Full evidence bundle → `~/skystar-evidence-*/report.txt` |
+
+Run tests while minisatip is up and a transponder is locked (or let Test 4 start minisatip).
+
 ---
 
 ## Test 1 — USB

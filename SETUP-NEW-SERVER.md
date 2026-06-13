@@ -71,11 +71,13 @@ ls /dev/dvb/adapter0/
 modinfo stb0899 | grep updates/skystar
 ```
 
-### 5. Start + test FTA stream
+### 5. Start server + test FTA stream
 
 ```bash
 ./scripts/start-minisatip.sh
-ffprobe "rtsp://127.0.0.1:8554/?src=1&freq=12344&pol=h&sr=29900&msys=dvbs2&mtype=8psk&fec=34&pids=1310,1320"
+bash scripts/run-skystar-tests.sh
+# or full evidence bundle:
+bash scripts/collect-skystar-evidence.sh
 ```
 
 ---

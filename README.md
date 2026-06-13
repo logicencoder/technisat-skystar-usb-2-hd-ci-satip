@@ -81,6 +81,19 @@ ffprobe "rtsp://127.0.0.1:8554/?src=1&freq=12344&pol=h&sr=29900&msys=dvbs2&mtype
 
 Tests: [TEST-SCENARIOS.md](TEST-SCENARIOS.md)
 
+**Automated test runner (Tests 1–5c on server):**
+
+```bash
+bash scripts/run-skystar-tests.sh
+```
+
+**Collect full lab evidence bundle (for blog / docs):**
+
+```bash
+bash scripts/collect-skystar-evidence.sh
+# → ~/skystar-evidence-YYYYMMDD-HHMM/report.txt
+```
+
 ---
 
 ## All docs
@@ -94,6 +107,9 @@ Tests: [TEST-SCENARIOS.md](TEST-SCENARIOS.md)
 | [HARDWARE-IDENTITY.md](HARDWARE-IDENTITY.md) | Card name & USB ID |
 | [PROBLEM-AND-SOLUTION.md](PROBLEM-AND-SOLUTION.md) | What was broken & why |
 | [TEST-SCENARIOS.md](TEST-SCENARIOS.md) | Tests |
+| [scripts/run-skystar-tests.sh](scripts/run-skystar-tests.sh) | Automated Tests 1–5c |
+| [scripts/collect-skystar-evidence.sh](scripts/collect-skystar-evidence.sh) | Lab evidence report |
+| [docs/blog-post-wordpress-en.html](docs/blog-post-wordpress-en.html) | WordPress blog post (English) |
 | [SETUP-NEW-SERVER.md](SETUP-NEW-SERVER.md) | Install from zero |
 | [SKYSTAR-GUIDE.md](SKYSTAR-GUIDE.md) | Daily use |
 | [LLM-INSTRUCTIONS.md](LLM-INSTRUCTIONS.md) | AI rules |
