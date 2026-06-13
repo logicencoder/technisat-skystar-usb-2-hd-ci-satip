@@ -69,51 +69,52 @@ Replace `192.168.1.97` with your server IP.
 
 ---
 
-## DiSEqC switch (3 satellites, 1 tuner) — tested
+## DiSEqC switch — tested, works
 
-One **TechniSat SkyStar USB 2 HD CI** + **minisatip** + **DiSEqC 1.0 switch** (3 dishes).  
-**Tested** — Astra **23.5°E**, **19.2°E**, **4.8°E** via Sat>IP + DVBViewer + TransEdit.
+**Tested:** **DiSEqC 1.0 switch** works with **SkyStar + minisatip + Sat>IP** (DVBViewer, TransEdit).  
+The server sends the switch command; the **client** chooses **which port** (`src=`).
 
-### Wiring (reference install)
+**Everyone’s wiring is different** — switch OUT 1/2/3 does not necessarily match satellite order.  
+**You** set the DiSEqC port in DVBViewer / TransEdit to match **your** dish on each OUT.
 
-| Switch OUT | Satellite | minisatip `src=` | TransEdit Pos | DVBViewer DiSEqC port |
-|------------|-----------|------------------|---------------|----------------------|
-| **1** | Astra **23.5°E** | `src=1` | **A/A** | **1** |
-| **2** | Astra **4.8°E** | `src=2` | **B/A** | **2** |
-| **3** | Astra **19.2°E** | `src=3` | **A/B** | **3** |
+### How it works
 
-> **Important:** Ports are **not** in satellite order (19.2 is port **3**, 4.8 is port **2**).  
-> If your switch labels differ, use the column that matches **your** dish on each OUT.
+| Layer | Role |
+|-------|------|
+| **Server (minisatip)** | Receives `src=1..4` from client → sends DiSEqC to that port. **No satellite map on server.** |
+| **DVBViewer** | Per satellite: set **DiSEqC port (1–4)** = which OUT goes to that dish |
+| **TransEdit** | Per scan: choose **Pos** (A/A, A/B, B/A, …) = switch port for that satellite |
+| **VLC / URL** | Parameter **`src=N`** = DiSEqC port |
 
-### Test transponders (FTA)
+Server flags in `scripts/start-minisatip.sh`: **`-d '*:2-0'`**, **`-q '*:25-54-54-25-25-25'`**, **`-k`**.
 
-| Satellite | `src=` | Example TP | RTSP test |
-|-----------|--------|------------|-----------|
-| 23.5°E | 1 | 12344 H 29900 DVB-S2 | `...&src=1&freq=12344&pol=h&sr=29900&msys=dvbs2&mtype=8psk&fec=34&pids=1310,1320` |
-| 4.8°E | 2 | 11727 V 27500 DVB-S2 | `...&src=2&freq=11727&pol=v&sr=27500&msys=dvbs2&mtype=8psk&fec=56&pids=0,16,17` |
-| 19.2°E | 3 | 11494 H 22000 DVB-S2 | `...&src=3&freq=11494&pol=h&sr=22000&msys=dvbs2&mtype=8psk&fec=23&pids=0,16,17` |
+### Example wiring (one test install — not universal)
 
-Server check (replace IP):
+Reference from one working setup — **not** a rule for everyone:
+
+| Switch OUT | Satellite (this test) | `src=` | TransEdit Pos | DVBViewer port |
+|------------|------------------------|--------|---------------|----------------|
+| 1 | Astra 23.5°E | 1 | A/A | 1 |
+| 2 | Astra 4.8°E | 2 | B/A | 2 |
+| 3 | Astra 19.2°E | 3 | A/B | 3 |
+
+Your 19.2°E might be on OUT2 and 4.8°E on OUT3 — **find your map** by scanning each port.
+
+### Verify (use `src=` for **your** port)
 
 ```bash
+# N = DiSEqC port for the dish under test; FREQ/SR = known TP on that satellite
 ffprobe -v error -show_entries stream=codec_name -of csv=p=0 \
-  "rtsp://127.0.0.1:8554/?src=3&freq=11494&pol=h&sr=22000&msys=dvbs2&mtype=8psk&fec=23&pids=0,16,17"
+  "rtsp://127.0.0.1:8554/?src=N&freq=FREQ&pol=h&sr=SR&msys=dvbs2&mtype=8psk&fec=23&pids=0,16,17"
 ```
 
-### Who configures what
-
-| Where | What you set |
-|-------|----------------|
-| **Server** | Nothing extra — `-d`, `-q`, `-k` already in `scripts/start-minisatip.sh` |
-| **DVBViewer** | Per satellite: **DiSEqC port 1 / 2 / 3** (table above) + Sat>IP `IP:8554` |
-| **TransEdit** | Per scan: **Pos A/A, B/A, or A/B** (table above) on RTSP device |
-| **VLC / manual URL** | Set **`src=`** to match the dish (table above) |
+Example: Astra 23.5°E — 12344 H 29900 (CT24); `src=` = **your** port for the 23.5°E dish.
 
 ### Scan tips
 
-- Scan **one satellite at a time** with the correct DiSEqC port / TransEdit Pos.
-- Some transponders may show *“server cannot provide requested transponder”* during a full scan — normal on a single tuner; retry or skip weak TPs.
-- Only **one** client can tune **one** transponder at a time.
+- Scan **one satellite at a time** with the correct DiSEqC port / TransEdit Pos **for your wiring**.
+- *“Server cannot provide requested transponder”* on some TPs during full scan — normal (one tuner).
+- Only **one** client / **one** transponder at a time.
 
 ---
 
@@ -157,15 +158,10 @@ vlc "rtsp://SERVER_IP:8554/?src=1&freq=12344&pol=h&sr=29900&msys=dvbs2&mtype=8ps
 
 ### 3. DiSEqC (multi-dish switch)
 
-For each satellite in DVBViewer, set **DiSEqC committed port** (tested wiring):
+**Tested** — port switching works. For **each satellite**, set **DiSEqC port (1–4)** in DVBViewer to match **your** switch OUT → dish wiring.  
+Same Sat>IP server (`IP:8554`); DVBViewer sends the port on each tune.
 
-| Satellite | DiSEqC port |
-|-----------|-------------|
-| Astra 23.5°E | **1** |
-| Astra 4.8°E | **2** |
-| Astra 19.2°E | **3** |
-
-Sat>IP server IP stays the same (`192.168.1.97:8554`). DVBViewer sends the port with each tune.
+One test example (not universal): 23.5°E→port 1, 4.8°E→port 2, 19.2°E→port 3 — see [DiSEqC section](SATIP-CLIENT-SETTINGS.md#diseqc-switch--tested-works).
 
 ### 4. Scan FTA transponders
 
@@ -210,15 +206,10 @@ TransEdit is **separate** from DVBViewer. Sat>IP in DVBViewer does not configure
 
 ### 2. DiSEqC Pos (per satellite)
 
-Before scanning, set **DiSEqC position** on the RTSP device (tested wiring):
+**Tested** — switch works over Sat>IP. Before scan, pick **Pos** (A/A, A/B, B/A, …) for **your** wiring — the switch port for that satellite.  
+Pos labels depend on switch type; discover your map by scanning or switch labels.
 
-| Satellite | TransEdit Pos |
-|-----------|---------------|
-| Astra 23.5°E | **A/A** |
-| Astra 4.8°E | **B/A** |
-| Astra 19.2°E | **A/B** |
-
-Scan **one satellite at a time** with the matching Pos.
+One test example (not for everyone): 23.5°E→A/A, 4.8°E→B/A, 19.2°E→A/B.
 
 ### 3. Scan
 
@@ -250,10 +241,9 @@ Disable SSDP if needed: add `-G` to minisatip start flags in `scripts/start-mini
 | Card | TechniSat SkyStar USB 2 HD CI (`14f7:0001`) |
 | Server | Ubuntu 24.04, minisatip |
 | Client tested | **DVBViewer Pro**, **TransEdit** (Windows) — FTA |
-| DiSEqC | **3-way switch** — 23.5 / 19.2 / 4.8°E tested |
+| DiSEqC | **Switch tested** — port switching works; **client** maps port → dish |
 | Also works | VLC, ffprobe, full transponder (`pids=all` with `-k`) |
-| Test satellites | Astra 23.5°E, 19.2°E, 4.8°E |
-| Test TP | 12344 H 29900 (23.5, CT24 FTA) |
+| Test example | Astra 23.5°E — 12344 H 29900 (CT24 FTA) |
 
 ---
 
@@ -264,8 +254,8 @@ Disable SSDP if needed: add `-G` to minisatip start flags in `scripts/start-mini
 | Client cannot connect | `ss -tlnp \| grep 8554`, firewall, correct IP |
 | Connect but black screen | Driver OK? Run [TEST-SCENARIOS.md](TEST-SCENARIOS.md) Test 5 |
 | Scan finds nothing | Patched stb0899 loaded? DVB-S2 needs patch |
-| TransEdit scan fails | RTSP device added? **`-k`**? Correct **Pos A/A, A/B, B/A**? |
-| Wrong satellite / no lock | **DiSEqC port** wrong — see DiSEqC table (19.2 = port **3**, 4.8 = port **2**) |
+| TransEdit scan fails | RTSP device? **`-k`**? Correct **DiSEqC Pos** for *your* wiring? |
+| Wrong satellite / no lock | Wrong **DiSEqC port** in client — check OUT→dish on physical switch |
 | “Cannot provide transponder” | Single tuner — scan one sat at a time; some TPs weak — retry |
 | 2% signal | Ignore if playback works |
 

@@ -4,7 +4,7 @@
 
 Ubuntu driver patch (DVB-S2) + **minisatip Sat>IP server** for **FTA** channels.
 
-**Tested** with **DVBViewer** and **TransEdit** — full transponder scan + **DiSEqC** (Astra 23.5 / 19.2 / 4.8°E).
+**Tested** with **DVBViewer** and **TransEdit** — full transponder scan + **DiSEqC switch** (port switching works).
 
 | Doc | Link |
 |-----|------|
