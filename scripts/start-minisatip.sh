@@ -32,7 +32,9 @@ fi
 echo "minisatip: $BIN"
 echo "Bind IP: $IP  RTSP: $SATIP_RTSP_PORT  HTTP: $SATIP_HTTP_PORT  adapter: $MINISATIP_ADAPTER"
 
+# -k: emulate pids=all (TransEdit scan / full transponder)
 exec "$BIN" -f -ll \
+  -k \
   -z "$CACHE" \
   -R "$HTML" \
   -L "$SATIP_LNB" \

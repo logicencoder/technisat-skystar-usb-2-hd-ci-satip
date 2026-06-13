@@ -65,20 +65,40 @@ ffprobe -v error -show_entries stream=codec_name \
 
 **Expected:** `codec_name=h264` (and often `mp2`)
 
+### Test 5b — Full transponder (`pids=all`)
+
+Requires minisatip **`-k`** (default in `scripts/start-minisatip.sh`):
+
+```bash
+timeout 10 ffprobe -v error -show_entries stream=codec_type -of csv=p=0 \
+  "rtsp://127.0.0.1:8554/?src=1&freq=12344&pol=h&sr=29900&msys=dvbs2&mtype=8psk&fec=34&pids=all"
+```
+
+**Expected:** multiple streams (e.g. `video`, `audio`) — used by **TransEdit** scan/analyzer.
+
 **VLC on any PC** — see [SATIP-CLIENT-SETTINGS.md](SATIP-CLIENT-SETTINGS.md)
 
-**DVBViewer (Windows)** — Sat>IP FTA tested, no codes. Settings in same doc.
+**DVBViewer (Windows)** — Sat>IP FTA tested. Settings in same doc.
 
 ---
 
-## Test 6 — DVBViewer Sat>IP (optional, FTA only)
+## Test 6 — DVBViewer Sat>IP (optional, FTA)
 
 1. Add Sat>IP server: `SERVER_IP:8554`
 2. Scan Astra 23.5°E — FTA transponders should appear
 3. Play CT24 (FTA)
 
-Full DVBViewer steps: [SATIP-CLIENT-SETTINGS.md](SATIP-CLIENT-SETTINGS.md)  
-**No CAM, no codes.**
+Full DVBViewer steps: [SATIP-CLIENT-SETTINGS.md](SATIP-CLIENT-SETTINGS.md)
+
+---
+
+## Test 6b — TransEdit Sat>IP (optional, FTA)
+
+1. **Settings → Hardware → Add → RTSP Network Device (Sat>IP)**
+2. IP `SERVER_IP`, port `8554` — select this device for scan
+3. Scan Astra 23.5°E — transponder + NIT scan should work (full transponder)
+
+Full TransEdit steps: [SATIP-CLIENT-SETTINGS.md](SATIP-CLIENT-SETTINGS.md)
 
 ---
 
@@ -121,7 +141,9 @@ Repeat Tests 2, 3, 5.
 | 3 | Driver | patched stb0899 + stock az6027 |
 | 4 | minisatip | ports 8554/8080 |
 | 5 | FTA stream | ffprobe h264 |
+| 5b | Full transponder | `pids=all` streams |
 | 6 | DVBViewer Sat>IP FTA | scan + play (optional) |
+| 6b | TransEdit Sat>IP | scan + NIT (optional) |
 | 7 | Reboot | works again |
 | 8 | Kernel update | rebuild stb0899, still works |
 

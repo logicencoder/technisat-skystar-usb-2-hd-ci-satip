@@ -4,7 +4,7 @@
 
 Ubuntu driver patch (DVB-S2) + **minisatip Sat>IP server** for **FTA** channels.
 
-**Tested** with DVBViewer Sat>IP client — **FTA only, no codes, no CAM setup in this guide.**
+**Tested** with **DVBViewer** and **TransEdit** (Sat>IP, FTA) — including **full transponder** scan.
 
 | Doc | Link |
 |-----|------|
@@ -47,7 +47,7 @@ sudo reboot
 rtsp://SERVER_IP:8554/?src=1&freq=12344&pol=h&sr=29900&msys=dvbs2&mtype=8psk&fec=34&pids=1310,1320
 ```
 
-**Clients:** VLC, DVBViewer (FTA), any Sat>IP client — see **[SATIP-CLIENT-SETTINGS.md](SATIP-CLIENT-SETTINGS.md)**
+**Clients:** VLC, DVBViewer, TransEdit, any Sat>IP client — see **[SATIP-CLIENT-SETTINGS.md](SATIP-CLIENT-SETTINGS.md)**
 
 ---
 
@@ -69,7 +69,7 @@ Tests: [TEST-SCENARIOS.md](TEST-SCENARIOS.md)
 
 | File | Content |
 |------|---------|
-| [SATIP-CLIENT-SETTINGS.md](SATIP-CLIENT-SETTINGS.md) | **Sat>IP + DVBViewer/VLC settings (FTA)** |
+| [SATIP-CLIENT-SETTINGS.md](SATIP-CLIENT-SETTINGS.md) | **Sat>IP — DVBViewer, TransEdit, VLC** |
 | [HARDWARE-IDENTITY.md](HARDWARE-IDENTITY.md) | Card name & USB ID |
 | [PROBLEM-AND-SOLUTION.md](PROBLEM-AND-SOLUTION.md) | What was broken & why |
 | [TEST-SCENARIOS.md](TEST-SCENARIOS.md) | Tests |

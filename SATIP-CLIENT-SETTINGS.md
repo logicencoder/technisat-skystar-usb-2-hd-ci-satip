@@ -17,6 +17,7 @@ These are set by `scripts/start-minisatip.sh`:
 | DVB adapter | **0** (SkyStar is always adapter 0) |
 | LNB | Universal `9750 / 10600 / 11700` MHz |
 | Protocol | Sat>IP 1.2 + RTSP |
+| Whole transponder | **`-k`** in start script (emulates `pids=all` for TransEdit scan / analyzer) |
 
 Check server is running:
 
@@ -52,6 +53,7 @@ rtsp://SERVER_IP:8554/?src=1&freq=FREQ&pol=POL&sr=SR&msys=MSYS&mtype=MTYPE&fec=F
 | mtype | 8psk | Modulation |
 | fec | 34 | FEC 3/4 |
 | pids | 1310,1320 | Video + audio PIDs |
+| pids | all | Full transponder (needs minisatip **`-k`** on server) |
 
 **Example — CT24, Astra 23.5°E (FTA, DVB-S2):**
 
@@ -126,6 +128,30 @@ vlc "rtsp://SERVER_IP:8554/?src=1&freq=12344&pol=h&sr=29900&msys=dvbs2&mtype=8ps
 
 ---
 
+## TransEdit (DVBViewer add-on) — Sat>IP scan
+
+> **Tested** — transponder scan, NIT scan, full transponder (`pids=all`).
+
+TransEdit is **separate** from DVBViewer. Sat>IP in DVBViewer does not configure TransEdit.
+
+### 1. Add RTSP device
+
+1. Open **TransEdit**
+2. **Settings → Hardware → Add → RTSP Network Device (Sat>IP)**
+3. **IP:** server IP (e.g. `192.168.1.97`), **port:** `8554`
+4. **LNB:** Universal (9750 / 10600 / 11700) — same as DVBViewer
+5. **DVB-S2:** tick for DVB-S2 transponders
+6. **Usage:** Scan or Any
+7. If scan fails on UDP — try **Protocol: TCP**
+
+### 2. Scan
+
+Select the **RTSP (Sat>IP)** device before scan (not local USB/BDA hardware).
+
+Server must run minisatip with **`-k`** (included in `scripts/start-minisatip.sh`).
+
+---
+
 ## Generic Sat>IP client (TVHeadend, vdr, etc.)
 
 | Field | Value |
@@ -147,8 +173,8 @@ Disable SSDP if needed: add `-G` to minisatip start flags in `scripts/start-mini
 |------|--------|
 | Card | TechniSat SkyStar USB 2 HD CI (`14f7:0001`) |
 | Server | Ubuntu 24.04, minisatip |
-| Client tested | **DVBViewer Pro** (Windows) — **FTA only** |
-| Also works | VLC, ffprobe, any Sat>IP client |
+| Client tested | **DVBViewer Pro**, **TransEdit** (Windows) — FTA |
+| Also works | VLC, ffprobe, full transponder (`pids=all` with `-k`) |
 | Test satellite | Astra 23.5°E |
 | Test TP | 12344 H 29900 DVB-S2 (CT24, FTA) |
 
@@ -161,6 +187,7 @@ Disable SSDP if needed: add `-G` to minisatip start flags in `scripts/start-mini
 | Client cannot connect | `ss -tlnp \| grep 8554`, firewall, correct IP |
 | Connect but black screen | Driver OK? Run [TEST-SCENARIOS.md](TEST-SCENARIOS.md) Test 5 |
 | Scan finds nothing | Patched stb0899 loaded? DVB-S2 needs patch |
+| TransEdit scan fails | RTSP device added in TransEdit? minisatip running with **`-k`**? |
 | 2% signal | Ignore if playback works |
 
 Server-side: [SKYSTAR-GUIDE.md](SKYSTAR-GUIDE.md)
