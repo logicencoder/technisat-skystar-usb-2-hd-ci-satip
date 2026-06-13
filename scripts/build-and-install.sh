@@ -1,5 +1,5 @@
 #!/bin/bash
-# SkyStar — skompiluj a nainštaluj patched stb0899 (DVB-S2 fix)
+# SkyStar — build and install patched stb0899 (DVB-S2 fix)
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")" && pwd)"
 LINUX="$ROOT/linux-6.8/drivers/media/dvb-frontends"

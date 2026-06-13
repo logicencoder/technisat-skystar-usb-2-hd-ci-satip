@@ -1,33 +1,33 @@
 # skystar-satip-docs
 
-Kompletná dokumentácia a skripty pre **TechniSat SkyStar USB 2 HD CI** + **minisatip** + **DVBViewer** na Ubuntu.
+Complete documentation and scripts for **TechniSat SkyStar USB 2 HD CI** + **minisatip** + **DVBViewer** on Ubuntu.
 
-## Prečo tento repozitár existuje
+## Why this repository exists
 
-Stock Linux kernel `stb0899` nevie DVB-S2 na karte `14f7:0001`. Riešenie: patched `stb0899` + stock `az6027` + vypnutý TBS media_build.
+Stock Linux kernel `stb0899` does not support DVB-S2 on card `14f7:0001`. Fix: patched `stb0899` + stock `az6027` + disabled TBS media_build.
 
-Tento repo je **backup návodu** pre usera aj pre AI agentov — aby ďalší LLM nerozbil systém.
+This repo is a **backup of the guide** for the user and for AI agents — so the next LLM does not break the system.
 
-## Začni tu
+## Start here
 
-| Súbor | Obsah |
-|-------|-------|
-| [SKYSTAR-NAVOD.md](SKYSTAR-NAVOD.md) | Kompletný návod — štart, diagnostika, kernel update |
-| [LLM-INSTRUKCIE.md](LLM-INSTRUKCIE.md) | **Pre AI:** čo robiť a čo NIKDY nerobiť |
+| File | Content |
+|------|---------|
+| [SKYSTAR-GUIDE.md](SKYSTAR-GUIDE.md) | Complete guide — startup, diagnostics, kernel update |
+| [LLM-INSTRUCTIONS.md](LLM-INSTRUCTIONS.md) | **For AI:** what to do and what NEVER to do |
 
-## Hardvér / sieť
+## Hardware / network
 
 - Server: Ubuntu 24.04, `192.168.1.97`
-- Karta: TechniSat SkyStar USB 2 HD CI (`14f7:0001`)
+- Tuner: TechniSat SkyStar USB 2 HD CI (`14f7:0001`)
 - Sat>IP: port 8554, web status 8080
-- Klient: DVBViewer Pro (Windows), CAM na Windows
+- Client: DVBViewer Pro (Windows), CAM on Windows
 
-## Rýchly štart (po reboote)
+## Quick start (after reboot)
 
 ```bash
 lsusb | grep 14f7
 ls /dev/dvb/adapter0/
-sudo modprobe dvb_usb_az6027   # ak chýba /dev/dvb
+sudo modprobe dvb_usb_az6027   # if /dev/dvb missing
 python3 ~/universal-service-manager/usm.py start minisatip
 ```
 
@@ -37,29 +37,29 @@ python3 ~/universal-service-manager/usm.py start minisatip
 rtsp://192.168.1.97:8554/?src=1&freq=12344&pol=h&sr=29900&msys=dvbs2&mtype=8psk&fec=34&pids=1310,1320
 ```
 
-## Štruktúra repa
+## Repository layout
 
 ```
 scripts/                  — load driver, install, minisatip start
-stb0899-module/           — patched driver zdroj (build proti Ubuntu headers)
-SKYSTAR-NAVOD.md          — hlavný návod
-LLM-INSTRUKCIE.md         — pravidlá pre AI agentov
+stb0899-module/           — patched driver source (build against Ubuntu headers)
+SKYSTAR-GUIDE.md          — main guide
+LLM-INSTRUCTIONS.md       — rules for AI agents
 ```
 
 ## Kernel update
 
-Po každom novom Ubuntu kerneli rebuildni `stb0899`:
+After every new Ubuntu kernel, rebuild `stb0899`:
 
 ```bash
 cd stb0899-module && make clean && make -j$(nproc) && sudo make install && sudo reboot
 ```
 
-Pozri [SKYSTAR-NAVOD.md](SKYSTAR-NAVOD.md) — sekcia „Kernel update“.
+See [SKYSTAR-GUIDE.md](SKYSTAR-GUIDE.md) — "Kernel update" section.
 
-## Lokálna kópia na serveri
+## Local copy on server
 
 ```
-~/sat_stuff/SKYSTAR-NAVOD.md
-~/sat_stuff/LLM-INSTRUKCIE.md
-~/sat_stuff/skystar-satip-docs/   ← tento git repozitár
+~/sat_stuff/SKYSTAR-GUIDE.md
+~/sat_stuff/LLM-INSTRUCTIONS.md
+~/sat_stuff/skystar-satip-docs/   ← this git repository
 ```

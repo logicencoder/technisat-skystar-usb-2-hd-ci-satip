@@ -1,12 +1,12 @@
 #!/bin/bash
-# SkyStar 2 HD CI (14f7:0001) — načítaj ovládač ak chýba. BEZ rmmod (zaseká kernel).
+# SkyStar 2 HD CI (14f7:0001) — load driver if missing. NO rmmod (can wedge kernel).
 set -euo pipefail
 
 KERNEL="$(uname -r)"
 MEDIA_DIR="/lib/modules/${KERNEL}/updates/extra/media"
 BACKUP="/home/enigma2/sat_stuff/backup/media.disabled.skystar"
 
-# TBS media_build v updates/ má iné symbol verzie — presuň mimo module path
+# TBS media_build in updates/ has wrong symbol versions — move out of module path
 for dir in "$MEDIA_DIR" "${MEDIA_DIR}.disabled.skystar"; do
   if [[ -d "$dir" && ! -L "$dir" ]]; then
     mkdir -p "$(dirname "$BACKUP")"

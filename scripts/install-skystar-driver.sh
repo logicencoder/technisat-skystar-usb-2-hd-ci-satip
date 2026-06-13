@@ -1,5 +1,5 @@
 #!/bin/bash
-# SkyStar USB 2 HD CI — patched stb0899 + reload (bez nebezpečného modprobe -r loop)
+# SkyStar USB 2 HD CI — patched stb0899 install (no dangerous modprobe -r loop)
 set -euo pipefail
 
 KVER="$(uname -r)"
@@ -20,7 +20,7 @@ done
 python3 /home/enigma2/universal-service-manager/usm.py stop minisatip 2>/dev/null || true
 docker stop le_hscr_sigint 2>/dev/null || true
 
-echo "→ Inštalujem patched stb0899.ko"
+echo "→ Installing patched stb0899.ko"
 install -d "$UPD"
 install -m 0644 "$BUILD/stb0899.ko" "$UPD/"
 depmod -a
@@ -43,11 +43,11 @@ for d in /sys/bus/usb/devices/*-*; do
 done
 
 if [[ -z "$USB" ]]; then
-  echo "⚠ SkyStar nie je na USB — po reboote: sudo modprobe dvb_usb_az6027"
+  echo "⚠ SkyStar not on USB — after reboot: sudo modprobe dvb_usb_az6027"
   exit 0
 fi
 
-echo "→ Patched stb0899 nainštalovaný v $UPD"
-echo "→ REŠTART PC alebo vytiahni/zapoj SkyStar USB, potom:"
+echo "→ Patched stb0899 installed in $UPD"
+echo "→ REBOOT PC or unplug/replug SkyStar USB, then:"
 echo "   sudo modprobe dvb_usb_az6027"
 echo "   python3 ~/universal-service-manager/usm.py start minisatip"

@@ -1,5 +1,5 @@
 #!/bin/bash
-# Sat>IP server — SkyStar USB 2 HD CI (14f7:0001), Astra 23.5°E, priamy LNB
+# Sat>IP server — SkyStar USB 2 HD CI (14f7:0001), Astra 23.5°E, direct LNB
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")" && pwd)"
@@ -14,7 +14,7 @@ IP=${IP:-192.168.1.97}
 
 mkdir -p "$CACHE"
 
-# SkyStar: NIE enigma režim (/etc/enigma2/settings je len pre TBS5590)
+# SkyStar: do NOT use enigma mode (/etc/enigma2/settings is TBS5590 only)
 if [[ -f /etc/enigma2/settings && ! -f /etc/enigma2/settings.tbs-only.bak ]]; then
   python3 - <<'PY'
 import yaml, subprocess
