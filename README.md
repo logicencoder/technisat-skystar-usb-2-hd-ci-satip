@@ -2,7 +2,20 @@
 
 > **Card:** **TechniSat SkyStar USB 2 HD CI** · USB **`14f7:0001`**
 
-Ubuntu driver patch (DVB-S2) + **minisatip Sat>IP server** for **FTA** channels.
+Stock Linux driver is **broken for DVB-S2** on this card — with the **patched `stb0899`** the card is **fully functional**. You do **not** need to discard it.
+
+**After patch — tested, working:**
+
+| Feature | Status |
+|---------|--------|
+| DVB-S2 lock / tune | ✅ |
+| FTA playback | ✅ |
+| **minisatip Sat>IP** (RTSP port 8554) | ✅ |
+| **DiSEqC switch** (multi-dish, port switching) | ✅ |
+| **DVBViewer** + **TransEdit** (scan, NIT, full transponder) | ✅ |
+| VLC / ffprobe | ✅ |
+
+Ubuntu driver patch + **minisatip Sat>IP server** for **FTA** channels.
 
 **Tested** with **DVBViewer** and **TransEdit** — full transponder scan + **DiSEqC switch** (port switching works).
 

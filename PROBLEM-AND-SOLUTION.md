@@ -43,12 +43,29 @@ Make **TechniSat SkyStar USB 2 HD CI** work on Ubuntu Linux with **DVB-S2**, str
 
 ---
 
-## After fix
+## After fix — card fully functional
+
+With the patched driver + minisatip, **TechniSat SkyStar USB 2 HD CI** is **fully usable** on Ubuntu.  
+**Do not throw the card away** — stock kernel DVB-S2 is broken; **after the patch everything tested works.**
+
+| What | Works |
+|------|--------|
+| DVB-S2 lock / tune | ✅ |
+| FTA channels (local + Sat>IP) | ✅ |
+| **minisatip Sat>IP** (RTSP 8554, web 8080) | ✅ |
+| **DiSEqC switch** (multi-dish port switching) | ✅ |
+| **DVBViewer** Sat>IP client | ✅ |
+| **TransEdit** scan / NIT / full transponder | ✅ |
+| VLC, ffprobe | ✅ |
+
+Details:
 
 - DVB-S2 lock works
 - FTA channels stream (e.g. CT24 test TP)
 - NIT/scan finds transponders
-- ~2% signal display is wrong but playback OK
+- Sat>IP to Windows/Linux clients
+- DiSEqC — client sets port; server sends switch command
+- ~2% signal display is wrong but playback OK (driver quirk, ignore if picture plays)
 
 ---
 
