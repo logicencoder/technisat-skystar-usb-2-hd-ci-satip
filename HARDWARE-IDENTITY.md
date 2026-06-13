@@ -45,7 +45,8 @@ TechniSat SkyStar USB 2 HD CI (14f7:0001)
   → FTA channels (VLC, DVBViewer Sat>IP — no codes)
 ```
 
-**FTA only.** Client settings: [SATIP-CLIENT-SETTINGS.md](SATIP-CLIENT-SETTINGS.md)
+**FTA only.** Client settings: [SATIP-CLIENT-SETTINGS.md](SATIP-CLIENT-SETTINGS.md)  
+Windows 10/11: [WINDOWS-NOTES.md](WINDOWS-NOTES.md)
 
 ---
 

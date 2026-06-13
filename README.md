@@ -25,6 +25,7 @@ Ubuntu driver patch + **minisatip Sat>IP server** for **FTA** channels.
 |-----|------|
 | **Tested OS / kernel / stack** | **[TESTED-ENVIRONMENT.md](TESTED-ENVIRONMENT.md)** |
 | Sat>IP client settings | **[SATIP-CLIENT-SETTINGS.md](SATIP-CLIENT-SETTINGS.md)** |
+| **Windows 10/11** | **[WINDOWS-NOTES.md](WINDOWS-NOTES.md)** — use Sat>IP, not local drivers |
 | Card details | [HARDWARE-IDENTITY.md](HARDWARE-IDENTITY.md) |
 
 ---
@@ -89,6 +90,7 @@ Tests: [TEST-SCENARIOS.md](TEST-SCENARIOS.md)
 | [TESTED-ENVIRONMENT.md](TESTED-ENVIRONMENT.md) | **Ubuntu 24.04, kernel 6.8.0-124, minisatip, clients** |
 | [PATCHES.md](PATCHES.md) | **Driver patches — DVB-S2 + signal/SNR (tested)** |
 | [SATIP-CLIENT-SETTINGS.md](SATIP-CLIENT-SETTINGS.md) | **Sat>IP — DVBViewer, TransEdit, DiSEqC, VLC** |
+| [WINDOWS-NOTES.md](WINDOWS-NOTES.md) | **Win10/11 — Sat>IP instead of broken local drivers** |
 | [HARDWARE-IDENTITY.md](HARDWARE-IDENTITY.md) | Card name & USB ID |
 | [PROBLEM-AND-SOLUTION.md](PROBLEM-AND-SOLUTION.md) | What was broken & why |
 | [TEST-SCENARIOS.md](TEST-SCENARIOS.md) | Tests |
