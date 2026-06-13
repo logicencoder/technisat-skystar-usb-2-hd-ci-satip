@@ -1,11 +1,10 @@
-# Hardware identity (read first — human and AI)
+# Hardware identity — TechniSat SkyStar USB 2 HD CI
 
 ## Exact product name
 
 **TechniSat SkyStar USB 2 HD CI**
 
-Use this **exact name** when searching, buying, configuring, or asking for help.  
-Other TechniSat products (SkyStar 2, SkyStar HD, PCIe cards, etc.) are **different hardware** — this guide does **not** apply to them.
+This repository is **only** for this card. Other TechniSat products are different hardware.
 
 ---
 
@@ -13,50 +12,45 @@ Other TechniSat products (SkyStar 2, SkyStar HD, PCIe cards, etc.) are **differe
 
 | Field | Value |
 |-------|--------|
+| Product | **TechniSat SkyStar USB 2 HD CI** |
+| USB ID | **`14f7:0001`** |
 | Vendor | TechniSat Digital GmbH |
-| Product name | **SkyStar USB 2 HD CI** |
-| USB vendor:product | **`14f7:0001`** |
-| `lsusb` example | `ID 14f7:0001 TechniSat Digital GmbH SkyStar 2 HD CI` |
 
 ```bash
 lsusb | grep 14f7
-# Bus XXX Device XXX: ID 14f7:0001 TechniSat Digital GmbH SkyStar 2 HD CI
+# ID 14f7:0001 TechniSat Digital GmbH SkyStar 2 HD CI
 ```
 
-If your stick shows a **different USB ID**, stop — this repository is not for your device.
+Wrong USB ID → this guide does not apply.
 
 ---
 
-## Internal chips (Linux drivers)
+## Linux drivers
 
-| Chip / driver | Role |
-|---------------|------|
-| `dvb_usb_az6027` | USB bridge (stock Ubuntu kernel) |
-| `stb0899` | Demodulator — **needs patched module for DVB-S2** |
-| `stb6100` | Tuner (stock Ubuntu kernel) |
+| Component | Source |
+|-----------|--------|
+| `dvb_usb_az6027` | Stock Ubuntu kernel |
+| `stb6100` | Stock Ubuntu kernel |
+| `stb0899` | **Patched** — `updates/skystar/stb0899.ko` (required for DVB-S2) |
 | Firmware | `/lib/firmware/dvb-usb-az6027-03.fw` |
 
 ---
 
-## What this card is used for in this project
+## What this project does
 
 ```
 TechniSat SkyStar USB 2 HD CI (14f7:0001)
-    → Ubuntu Linux server (patched stb0899 + minisatip)
-    → Sat>IP / RTSP over LAN
-    → DVBViewer Pro on Windows (CAM on PC)
+  → Ubuntu + patched stb0899
+  → minisatip (Sat>IP / RTSP)
+  → FTA channels (VLC or any Sat>IP client)
 ```
 
-Test satellite in this guide: **Astra 23.5°E** (e.g. CT24, DVB-S2 TP 12344 H 29900).
+**FTA only.** No CAM. No decryption setup.
 
 ---
 
-## For AI / LLM agents
+## For AI / LLM
 
-Before changing anything on a server, verify:
-
-1. `lsusb` shows **`14f7:0001`** and name contains **SkyStar 2 HD CI**
-2. You are following docs from this repo for **TechniSat SkyStar USB 2 HD CI** only
-3. Do not substitute drivers or settings from TBS 5590 or other tuners
-
-See also: [LLM-INSTRUCTIONS.md](LLM-INSTRUCTIONS.md)
+1. Confirm `lsusb` shows **`14f7:0001`**
+2. Card name: **TechniSat SkyStar USB 2 HD CI**
+3. Read [LLM-INSTRUCTIONS.md](LLM-INSTRUCTIONS.md) before changing the system
