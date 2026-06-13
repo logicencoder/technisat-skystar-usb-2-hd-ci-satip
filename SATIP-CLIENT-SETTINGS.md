@@ -246,7 +246,7 @@ Disable SSDP if needed: add `-G` to minisatip start flags in `scripts/start-mini
 | Item | Value |
 |------|--------|
 | Card | TechniSat SkyStar USB 2 HD CI (`14f7:0001`) |
-| Server | Ubuntu 24.04, minisatip |
+| Server | **Ubuntu 24.04.4 LTS**, kernel **6.8.0-124-generic**, minisatip |
 | Client tested | **DVBViewer Pro**, **TransEdit** (Windows) — FTA |
 | DiSEqC | **Switch tested** — port switching works; **client** maps port → dish |
 | Also works | VLC, ffprobe, full transponder (`pids=all` with `-k`) |

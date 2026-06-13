@@ -18,10 +18,12 @@ Stock Linux driver is **broken for DVB-S2** on this card — with the **patched 
 
 Ubuntu driver patch + **minisatip Sat>IP server** for **FTA** channels.
 
-**Tested** with **DVBViewer** and **TransEdit** — full transponder scan + **DiSEqC switch** (port switching works).
+**Tested** on **Ubuntu 24.04 LTS** · kernel **6.8.0-124-generic** — see **[TESTED-ENVIRONMENT.md](TESTED-ENVIRONMENT.md)**  
+**Clients:** **DVBViewer** and **TransEdit** — full transponder scan + **DiSEqC switch** (port switching works).
 
 | Doc | Link |
 |-----|------|
+| **Tested OS / kernel / stack** | **[TESTED-ENVIRONMENT.md](TESTED-ENVIRONMENT.md)** |
 | Sat>IP client settings | **[SATIP-CLIENT-SETTINGS.md](SATIP-CLIENT-SETTINGS.md)** |
 | Card details | [HARDWARE-IDENTITY.md](HARDWARE-IDENTITY.md) |
 
@@ -84,6 +86,7 @@ Tests: [TEST-SCENARIOS.md](TEST-SCENARIOS.md)
 
 | File | Content |
 |------|---------|
+| [TESTED-ENVIRONMENT.md](TESTED-ENVIRONMENT.md) | **Ubuntu 24.04, kernel 6.8.0-124, minisatip, clients** |
 | [PATCHES.md](PATCHES.md) | **Driver patches — DVB-S2 + signal/SNR (tested)** |
 | [SATIP-CLIENT-SETTINGS.md](SATIP-CLIENT-SETTINGS.md) | **Sat>IP — DVBViewer, TransEdit, DiSEqC, VLC** |
 | [HARDWARE-IDENTITY.md](HARDWARE-IDENTITY.md) | Card name & USB ID |

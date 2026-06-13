@@ -27,8 +27,10 @@ AI assistants: also read [LLM-INSTRUCTIONS.md](LLM-INSTRUCTIONS.md).
 | Item | Detail |
 |------|--------|
 | Card | **TechniSat SkyStar USB 2 HD CI** · **`14f7:0001`** |
+| **OS (tested)** | **Ubuntu 24.04.4 LTS** — see [TESTED-ENVIRONMENT.md](TESTED-ENVIRONMENT.md) |
+| **Kernel (tested)** | **6.8.0-124-generic** |
+| Also supported | Ubuntu 22.04 LTS (rebuild driver per kernel) |
 | LNB | Connected (e.g. Astra 23.5°E) |
-| OS | Ubuntu 22.04 / 24.04 |
 | Output | FTA via Sat>IP — VLC or any Sat>IP client |
 
 No TBS `media_build` in `/lib/modules/.../updates/extra/media/`.
