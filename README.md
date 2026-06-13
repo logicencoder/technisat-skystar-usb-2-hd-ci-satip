@@ -21,6 +21,8 @@ Ubuntu driver patch + **minisatip Sat>IP server** for **FTA** channels.
 **Tested** on **Ubuntu 24.04 LTS** · kernel **6.8.0-124-generic** — see **[TESTED-ENVIRONMENT.md](TESTED-ENVIRONMENT.md)**  
 **Clients:** **DVBViewer** and **TransEdit** — full transponder scan + **DiSEqC switch** (port switching works).
 
+**Story / blog:** articles are published externally — see **[BLOG-LINKS.md](BLOG-LINKS.md)** (this repo stays technical docs + scripts only).
+
 | Doc | Link |
 |-----|------|
 | **Tested OS / kernel / stack** | **[TESTED-ENVIRONMENT.md](TESTED-ENVIRONMENT.md)** |
@@ -109,7 +111,7 @@ bash scripts/collect-skystar-evidence.sh
 | [TEST-SCENARIOS.md](TEST-SCENARIOS.md) | Tests |
 | [scripts/run-skystar-tests.sh](scripts/run-skystar-tests.sh) | Automated Tests 1–5c |
 | [scripts/collect-skystar-evidence.sh](scripts/collect-skystar-evidence.sh) | Lab evidence report |
-| [docs/blog-post-wordpress-en.html](docs/blog-post-wordpress-en.html) | WordPress blog post (English) |
+| [BLOG-LINKS.md](BLOG-LINKS.md) | External blog / article URLs (not duplicated here) |
 | [SETUP-NEW-SERVER.md](SETUP-NEW-SERVER.md) | Install from zero |
 | [SKYSTAR-GUIDE.md](SKYSTAR-GUIDE.md) | Daily use |
 | [LLM-INSTRUCTIONS.md](LLM-INSTRUCTIONS.md) | AI rules |
