@@ -3,15 +3,15 @@
 > **Card:** **TechniSat SkyStar USB 2 HD CI** · USB **`14f7:0001`**
 
 > **Goal:** Card works on Ubuntu with DVB-S2 + **minisatip** streams **FTA** via Sat>IP/RTSP.  
-> **Repo:** https://github.com/logicencoder/technisat-skystar-usb-2-hd-ci
+> **Repo:** https://github.com/logicencoder/technisat-skystar-usb-2-hd-ci-satip
 
 ---
 
 ## Quick install
 
 ```bash
-git clone https://github.com/logicencoder/technisat-skystar-usb-2-hd-ci.git
-cd technisat-skystar-usb-2-hd-ci
+git clone https://github.com/logicencoder/technisat-skystar-usb-2-hd-ci-satip.git
+cd technisat-skystar-usb-2-hd-ci-satip
 cp config.env.example config.env   # optional
 sudo bash scripts/install-new-server.sh
 sudo reboot
@@ -76,20 +76,22 @@ ffprobe "rtsp://127.0.0.1:8554/?src=1&freq=12344&pol=h&sr=29900&msys=dvbs2&mtype
 
 ---
 
-## Watch FTA
+## Watch FTA via Sat>IP
+
+See **[SATIP-CLIENT-SETTINGS.md](SATIP-CLIENT-SETTINGS.md)** for DVBViewer / VLC / Sat>IP client setup.
+
+**Tested in DVBViewer — FTA only, no codes, no CAM.**
 
 ```
 rtsp://SERVER_IP:8554/?src=1&freq=12344&pol=h&sr=29900&msys=dvbs2&mtype=8psk&fec=34&pids=1310,1320
 ```
-
-VLC → Open Network Stream. Web status: `http://SERVER_IP:8080/`
 
 ---
 
 ## Kernel update
 
 ```bash
-cd technisat-skystar-usb-2-hd-ci
+cd technisat-skystar-usb-2-hd-ci-satip
 sudo bash scripts/install-skystar-driver.sh
 sudo reboot
 ```
@@ -100,7 +102,7 @@ sudo reboot
 
 ```
 Card: TechniSat SkyStar USB 2 HD CI — USB 14f7:0001 ONLY
-Repo: https://github.com/logicencoder/technisat-skystar-usb-2-hd-ci
+Repo: https://github.com/logicencoder/technisat-skystar-usb-2-hd-ci-satip
 Read HARDWARE-IDENTITY.md and LLM-INSTRUCTIONS.md first.
 Run: sudo bash scripts/install-new-server.sh && sudo reboot
 Then: ./scripts/start-minisatip.sh

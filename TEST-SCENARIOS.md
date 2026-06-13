@@ -65,15 +65,24 @@ ffprobe -v error -show_entries stream=codec_name \
 
 **Expected:** `codec_name=h264` (and often `mp2`)
 
-**VLC on any PC:**
+**VLC on any PC** — see [SATIP-CLIENT-SETTINGS.md](SATIP-CLIENT-SETTINGS.md)
 
-```
-rtsp://SERVER_IP:8554/?src=1&freq=12344&pol=h&sr=29900&msys=dvbs2&mtype=8psk&fec=34&pids=1310,1320
-```
+**DVBViewer (Windows)** — Sat>IP FTA tested, no codes. Settings in same doc.
 
 ---
 
-## Test 6 — Reboot
+## Test 6 — DVBViewer Sat>IP (optional, FTA only)
+
+1. Add Sat>IP server: `SERVER_IP:8554`
+2. Scan Astra 23.5°E — FTA transponders should appear
+3. Play CT24 (FTA)
+
+Full DVBViewer steps: [SATIP-CLIENT-SETTINGS.md](SATIP-CLIENT-SETTINGS.md)  
+**No CAM, no codes.**
+
+---
+
+## Test 7 — Reboot
 
 ```bash
 sudo reboot
@@ -90,7 +99,7 @@ Repeat Test 5.
 
 ---
 
-## Test 7 — Kernel update
+## Test 8 — Kernel update
 
 After new Ubuntu kernel:
 
@@ -112,8 +121,9 @@ Repeat Tests 2, 3, 5.
 | 3 | Driver | patched stb0899 + stock az6027 |
 | 4 | minisatip | ports 8554/8080 |
 | 5 | FTA stream | ffprobe h264 |
-| 6 | Reboot | works again |
-| 7 | Kernel update | rebuild stb0899, still works |
+| 6 | DVBViewer Sat>IP FTA | scan + play (optional) |
+| 7 | Reboot | works again |
+| 8 | Kernel update | rebuild stb0899, still works |
 
 ---
 

@@ -41,11 +41,11 @@ Wrong USB ID → this guide does not apply.
 ```
 TechniSat SkyStar USB 2 HD CI (14f7:0001)
   → Ubuntu + patched stb0899
-  → minisatip (Sat>IP / RTSP)
-  → FTA channels (VLC or any Sat>IP client)
+  → minisatip Sat>IP server (port 8554)
+  → FTA channels (VLC, DVBViewer Sat>IP — no codes)
 ```
 
-**FTA only.** No CAM. No decryption setup.
+**FTA only.** Client settings: [SATIP-CLIENT-SETTINGS.md](SATIP-CLIENT-SETTINGS.md)
 
 ---
 

@@ -88,4 +88,4 @@ Full story: [PROBLEM-AND-SOLUTION.md](PROBLEM-AND-SOLUTION.md)
 
 ## Repo
 
-https://github.com/logicencoder/technisat-skystar-usb-2-hd-ci
+https://github.com/logicencoder/technisat-skystar-usb-2-hd-ci-satip

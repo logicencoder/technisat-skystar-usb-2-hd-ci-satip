@@ -1,8 +1,8 @@
 # LLM Instructions — TechniSat SkyStar USB 2 HD CI
 
 > **Card:** **TechniSat SkyStar USB 2 HD CI** · USB **`14f7:0001`** ONLY  
-> **Repo:** https://github.com/logicencoder/technisat-skystar-usb-2-hd-ci  
-> **Scope:** FTA Sat>IP via minisatip — **no CAM, no decryption setup**
+> **Repo:** https://github.com/logicencoder/technisat-skystar-usb-2-hd-ci-satip  
+> **Scope:** Sat>IP FTA via minisatip — tested in DVBViewer, **no codes, no CAM**
 
 Read [HARDWARE-IDENTITY.md](HARDWARE-IDENTITY.md) before any changes.
 
@@ -11,8 +11,8 @@ Read [HARDWARE-IDENTITY.md](HARDWARE-IDENTITY.md) before any changes.
 ## New server
 
 ```bash
-git clone https://github.com/logicencoder/technisat-skystar-usb-2-hd-ci.git
-cd technisat-skystar-usb-2-hd-ci
+git clone https://github.com/logicencoder/technisat-skystar-usb-2-hd-ci-satip.git
+cd technisat-skystar-usb-2-hd-ci-satip
 sudo bash scripts/install-new-server.sh
 sudo reboot
 ./scripts/start-minisatip.sh
@@ -69,6 +69,7 @@ pgrep -a minisatip
 
 ## References
 
+- [SATIP-CLIENT-SETTINGS.md](SATIP-CLIENT-SETTINGS.md)
 - [HARDWARE-IDENTITY.md](HARDWARE-IDENTITY.md)
 - [SETUP-NEW-SERVER.md](SETUP-NEW-SERVER.md)
 - [TEST-SCENARIOS.md](TEST-SCENARIOS.md)
